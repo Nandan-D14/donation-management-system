@@ -9,6 +9,8 @@ import java.util.List;
 /**
  * Singleton Pattern — EventManager
  * Thread-safe double-checked locking implementation
+ *
+ * @author Nandan (SRN 363)
  */
 public class EventManager {
 

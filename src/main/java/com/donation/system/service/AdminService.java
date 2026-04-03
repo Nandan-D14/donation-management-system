@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * GRASP: Information Expert
- * AdminService holds all business logic for Admin operations.
- * It has the knowledge (data + behavior) needed to manage admins.
+ * GRASP: Controller Principle
+ * Admin acts as the system controller — coordinates all operations
+ * between Donation, User, and Inventory modules without doing the work itself.
  *
  * @author Nandan (SRN 363)
  */

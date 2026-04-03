@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * GRASP: Information Expert
- * DonationService holds business logic for donation recording and status management.
- * Uses EventManager (Singleton) to log donation events.
+ * GRASP: Controller Principle
+ * Admin coordinates this operation — Donation module handles its own logic,
+ * Admin delegates without performing the work itself.
  *
  * @author Nandan (SRN 363)
  */

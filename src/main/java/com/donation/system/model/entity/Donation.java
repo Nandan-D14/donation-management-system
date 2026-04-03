@@ -23,10 +23,6 @@ public class Donation {
     private int quantity;
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "donor_id")
-    private User donor;
-
     public void updateStatus(String newStatus) {
         this.status = newStatus;
     }

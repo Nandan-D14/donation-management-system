@@ -6,6 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * GRASP: Controller Pattern
+ * AdminController handles all system events/UI requests related to Admin management.
+ * It delegates business logic to AdminService (Information Expert).
+ *
+ * @author Nandan (SRN 363)
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {

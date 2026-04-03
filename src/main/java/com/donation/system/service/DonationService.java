@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * GRASP: Information Expert
+ * DonationService holds business logic for donation recording and status management.
+ * Uses EventManager (Singleton) to log donation events.
+ *
+ * @author Nandan (SRN 363)
+ */
 @Service
 public class DonationService {
 

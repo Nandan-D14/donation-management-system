@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+/**
+ * GRASP: Controller Pattern
+ * DonationController handles all system events related to Donation recording and status updates.
+ * Delegates to DonationService (Information Expert) and EventManager (Singleton).
+ *
+ * @author Nandan (SRN 363)
+ */
 @Controller
 @RequestMapping("/donations")
 public class DonationController {

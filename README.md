@@ -1,145 +1,98 @@
 # Event-Driven Blood & Organ Donation Management System
 
-A Spring Boot MVC web application for managing blood and organ donations, built with Java 23, MySQL, and Thymeleaf.
+Nandan-only Spring Boot MVC application for admin and donation management.
 
 ---
 
-## 🏗️ Architecture
+## Scope
+
+This repository now keeps only the Nandan module:
+
+- `AdminController` as the GRASP Controller
+- `AdminService` and `DonationService` as the business logic layer
+- `Admin` and `Donation` entities
+- `AdminRepository` and `DonationRepository`
+- `EventManager` as the Singleton event log (double-checked locking)
+- Thymeleaf views under `templates/admin/` and `templates/donations/`
+
+Removed from the runtime surface:
+
+- `HomeController`
+- `index.html`
+- Separate donation controller entry points
+
+---
+
+## Architecture
 
 | Layer | Technology |
 |-------|------------|
-| **Backend** | Spring Boot 4.0.5 · Java 23 |
-| **Database** | MySQL 8.0+ · Spring Data JPA · Hibernate |
-| **Frontend** | Thymeleaf · Bootstrap 5 |
-| **Build** | Maven (wrapper included) |
+| Backend | Spring Boot 4.0.5 · Java 23 |
+| Database | MySQL 8.0+ · Spring Data JPA · Hibernate |
+| Frontend | Thymeleaf · Bootstrap 5 |
+| Build | Maven wrapper |
 
 ---
 
-## 👥 Team
+## GRASP and Pattern
 
-| Member | SRN | Module | Design Pattern | GRASP |
-|--------|-----|--------|----------------|-------|
-| **Nandan** | 363 | Admin, Donation | Singleton (EventManager) | Controller |
-| **Nandani** | 364 | Donor, Patient | Observer (DonationEvent) | Information Expert |
-| **Sharath** | 823 | User, Request | Factory (RequestFactory) | Creator |
-| **Neha** | 379 | Inventory | Strategy (Matching) | Low Coupling |
-
----
-
-## 🧩 Design Patterns
-
-| Pattern | Implementation |
-|---------|---------------|
-| **Singleton** | `EventManager` — manages donation events globally |
-| **Observer** | `Donor` notifies, `Patient` receives donation alerts |
-| **Factory** | `RequestFactory` creates Blood/Organ requests |
-| **Strategy** | `MatchingStrategy` — priority-based vs FIFO matching |
+| Concern | Implementation |
+|---------|----------------|
+| GRASP Controller | `AdminController` handles HTTP requests and delegates to services |
+| Singleton Pattern | `EventManager` uses double-checked locking and logs donation events |
+| Repository | `AdminRepository`, `DonationRepository` |
 
 ---
 
-## 🚀 Quick Start
+## Main Routes
+
+- `/admin/dashboard`
+- `/admin/users`
+- `/admin/users/add`
+- `/admin/donations`
+- `/admin/donations/add`
+- `/admin/donations/update-status/{id}`
+- `/admin/reports`
+
+---
+
+## Run
 
 ### Prerequisites
+
 - JDK 21+
 - MySQL 8.0+
-- Git
 
-### 1. Clone & Setup
-```bash
-git clone https://github.com/Nandan-D14/donation-management-system.git
-cd donation-management-system
-```
+### Database
 
-### 2. Database Setup
 ```sql
 CREATE DATABASE donationdb;
 ```
 
-### 3. Configure
-Edit `src/main/resources/application.properties`:
-```properties
-spring.datasource.password=YOUR_MYSQL_PASSWORD
-```
+### Configure
 
-### 4. Run
+Set your MySQL password in `src/main/resources/application.properties`.
+
+### Start
+
 ```bash
 ./mvnw spring-boot:run
 ```
 
-### 5. Access
-Open `http://localhost:8080` in your browser.
+Open `/admin/dashboard` in the browser.
 
 ---
 
-## 📁 Project Structure
-
-```
-src/main/java/com/donation/system/
-├── model/
-│   ├── entity/       → JPA entities (User, Donor, Patient, Admin, Donation, Request, Inventory)
-│   ├── dto/          → Data Transfer Objects
-│   └── enums/        → BloodType, RequestStatus, DonationType
-├── repository/       → Spring Data JPA interfaces
-├── service/
-│   ├── factory/      → RequestFactory
-│   ├── observer/     → DonationSubject, DonationObserver
-│   ├── singleton/    → EventManager
-│   └── strategy/     → MatchingStrategy, HighPriorityStrategy, NormalStrategy
-├── controller/       → @Controller classes
-└── resources/
-    ├── templates/    → Thymeleaf HTML views
-    └── application.properties
-```
-
----
-
-## 🌿 Git Workflow
-
-| Branch | Purpose |
-|--------|---------|
-| `main` | Stable, production-ready code |
-| `feature/singleton` | Nandan — Admin, Donation, EventManager |
-| `feature/observer` | Nandani — Donor, Patient, Observer |
-| `feature/factory` | Sharath — User, Request, Factory |
-| `feature/strategy` | Neha — Inventory, Strategy |
-
-### Creating a feature branch
-```bash
-git checkout -b feature/<member-name>
-git push -u origin feature/<member-name>
-```
-
-### Merging
-1. Push your feature branch
-2. Create a Pull Request on GitHub
-3. Code review → Merge to `main`
-
----
-
-## 📖 Agent Skills
-
-This project includes AI agent skill files in `.agent-skills/` that define code generation rules for each team member:
-
-- `about-this-proejct/SKILL.md` — Project overview & architecture
-- `project-environment-setup/SKILL.md` — Environment setup guide
-- `nandan-admin-donation/SKILL.md` — Admin & Donation module
-- `nandani-donor-patient/SKILL.md` — Donor & Patient module
-- `sharath-user-request/SKILL.md` — User & Request module
-- `neha-inventory/SKILL.md` — Inventory module
-
----
-
-## 🛠️ Useful Commands
+## Useful Commands
 
 | Task | Command |
 |------|---------|
 | Build | `./mvnw clean package` |
-| Run | `./mvnw spring-boot:run` |
 | Test | `./mvnw test` |
-| Skip tests | `./mvnw spring-boot:run -DskipTests` |
+| Run | `./mvnw spring-boot:run` |
 
 ---
 
-## 📄 License
+## Notes
 
-This project is for academic purposes (OOAD Coursework).
+The project documentation and runtime scope now reflect only Nandan's part.

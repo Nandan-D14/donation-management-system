@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * GRASP: Controller Principle
- * Admin acts as the system controller — coordinates all operations
- * between Donation, User, and Inventory modules without doing the work itself.
+ * GRASP: Information Expert
+ * AdminService owns admin-related data access and business coordination.
+ * Controllers delegate to this service rather than performing work directly.
  *
  * @author Nandan (SRN 363)
  */

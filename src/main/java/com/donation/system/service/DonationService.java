@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * GRASP: Controller Principle
- * Admin coordinates this operation — Donation module handles its own logic,
- * Admin delegates without performing the work itself.
+ * GRASP: Information Expert
+ * DonationService owns donation-related business logic and persistence.
+ * Controllers delegate donation operations here instead of computing in the UI layer.
  *
  * @author Nandan (SRN 363)
  */
@@ -49,6 +49,10 @@ public class DonationService {
             donation.updateStatus(status);
             return donationRepo.save(donation);
         }).orElse(null);
+    }
+
+    public long getDonationCount() {
+        return donationRepo.count();
     }
 
     public int getEventCount() {

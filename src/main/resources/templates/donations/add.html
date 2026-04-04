@@ -7,7 +7,7 @@
 <body>
     <div class="container mt-5">
         <h1>Record Donation</h1>
-        <form th:action="@{/donations/add}" th:object="${donation}" method="post" class="mt-3">
+        <form th:action="@{/admin/donations/add}" th:object="${donation}" method="post" class="mt-3">
             <div class="mb-3">
                 <label>Donation Type</label>
                 <select th:field="*{donationType}" class="form-control" required>
@@ -20,7 +20,7 @@
                 <input type="number" th:field="*{quantity}" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-success">Save</button>
-            <a href="/donations" class="btn btn-secondary">Cancel</a>
+            <a href="/admin/donations" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </body>

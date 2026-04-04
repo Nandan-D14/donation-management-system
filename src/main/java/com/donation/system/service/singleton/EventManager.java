@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Singleton Pattern — EventManager
- * Thread-safe double-checked locking implementation
+ * Singleton Pattern - EventManager
+ * Thread-safe double-checked locking implementation.
  *
  * @author Nandan (SRN 363)
  */
@@ -22,7 +22,7 @@ public class EventManager {
     }
 
     /**
-     * Singleton: Get the single instance (thread-safe)
+     * Returns the singleton instance using double-checked locking.
      */
     public static EventManager getInstance() {
         if (instance == null) {

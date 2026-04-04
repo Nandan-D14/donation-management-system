@@ -29,7 +29,21 @@ public class AdminService {
         return adminRepo.findById(id);
     }
 
+    public Optional<Admin> getAdminByMail(String mail) {
+        return adminRepo.findByMail(mail);
+    }
+
     public Admin saveAdmin(Admin admin) {
         return adminRepo.save(admin);
+    }
+
+    public boolean isMailRegistered(String mail) {
+        return adminRepo.findByMail(mail).isPresent();
+    }
+
+    public boolean authenticate(String mail, String password) {
+        return adminRepo.findByMail(mail)
+                .map(admin -> admin.getPassword() != null && admin.getPassword().equals(password))
+                .orElse(false);
     }
 }

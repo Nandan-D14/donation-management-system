@@ -12,7 +12,6 @@ This repository now keeps only the Nandan module:
 - `AdminService` and `DonationService` as the business logic layer
 - `Admin` and `Donation` entities
 - `AdminRepository` and `DonationRepository`
-- `EventManager` as the Singleton event log (double-checked locking)
 - Thymeleaf views under `templates/admin/` and `templates/donations/`
 
 Removed from the runtime surface:
@@ -39,7 +38,6 @@ Removed from the runtime surface:
 | Concern | Implementation |
 |---------|----------------|
 | GRASP Controller | `AdminController` handles HTTP requests and delegates to services |
-| Singleton Pattern | `EventManager` uses double-checked locking and logs donation events |
 | Repository | `AdminRepository`, `DonationRepository` |
 
 ---

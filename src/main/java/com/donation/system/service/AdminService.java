@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * GRASP: Information Expert
- * AdminService owns admin-related data access and business coordination.
- * Controllers delegate to this service rather than performing work directly.
+ * AdminService handles admin-related data access and persistence.
  *
  * @author Nandan (SRN 363)
  */

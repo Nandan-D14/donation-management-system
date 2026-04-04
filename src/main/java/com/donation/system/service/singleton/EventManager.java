@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Singleton Pattern - EventManager
- * Thread-safe double-checked locking implementation.
+ * Singleton Pattern: EventManager
+ * Thread-safe singleton using double-checked locking.
  *
  * @author Nandan (SRN 363)
  */
@@ -18,12 +18,9 @@ public class EventManager {
     private final List<Donation> events;
 
     private EventManager() {
-        this.events = new ArrayList<>();
+        this.events = Collections.synchronizedList(new ArrayList<>());
     }
 
-    /**
-     * Returns the singleton instance using double-checked locking.
-     */
     public static EventManager getInstance() {
         if (instance == null) {
             synchronized (EventManager.class) {
@@ -40,7 +37,9 @@ public class EventManager {
     }
 
     public List<Donation> getEvents() {
-        return Collections.unmodifiableList(events);
+        synchronized (events) {
+            return List.copyOf(events);
+        }
     }
 
     public int getEventCount() {

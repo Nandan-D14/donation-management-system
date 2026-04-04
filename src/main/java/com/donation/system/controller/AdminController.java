@@ -35,6 +35,7 @@ public class AdminController {
         model.addAttribute("message", "Welcome to Admin Dashboard");
         model.addAttribute("donationCount", donationService.getAllDonations().size());
         model.addAttribute("adminCount", adminService.getAllAdmins().size());
+        model.addAttribute("eventCount", donationService.getEventCount());
         return "admin/dashboard";
     }
 

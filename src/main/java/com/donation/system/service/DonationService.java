@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * GRASP: Information Expert
- * DonationService owns donation-related business logic and persistence.
- * Controllers delegate donation operations here instead of computing in the UI layer.
+ * DonationService handles donation-related data access and persistence.
  *
  * @author Nandan (SRN 363)
  */
@@ -39,15 +37,17 @@ public class DonationService {
     }
 
     public Donation recordDonation(Donation donation) {
-        Donation saved = donationRepo.save(donation);
-        eventManager.logEvent(saved);
-        return saved;
+        Donation savedDonation = donationRepo.save(donation);
+        eventManager.logEvent(savedDonation);
+        return savedDonation;
     }
 
     public Donation updateStatus(int id, String status) {
         return donationRepo.findById(id).map(donation -> {
             donation.updateStatus(status);
-            return donationRepo.save(donation);
+            Donation updatedDonation = donationRepo.save(donation);
+            eventManager.logEvent(updatedDonation);
+            return updatedDonation;
         }).orElse(null);
     }
 

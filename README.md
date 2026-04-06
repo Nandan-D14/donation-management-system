@@ -126,7 +126,4 @@ git push -u origin feature/<member-name>
 | Skip tests | `./mvnw spring-boot:run -DskipTests` |
 
 ---
-
-## 📄 License
-
 This project is for academic purposes (OOAD Coursework).

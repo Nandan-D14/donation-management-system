@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+:root {
+    --bg-top: #f4efe7;
+    --bg-bottom: #e6eef0;
+    --surface: #ffffff;
+    --surface-soft: #f8fafb;
+    --text: #182329;
+    --muted: #51616b;
+    --primary: #0f766e;
+    --primary-hover: #0b5f59;
+    --border: #d6dfe3;
+    --danger-bg: #fff1f0;
+    --danger-text: #a33027;
+    --success-bg: #ecfdf4;
+    --success-text: #157347;
+    --shadow: 0 14px 34px rgba(24, 35, 41, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: "Source Sans 3", "Segoe UI", sans-serif;
+    background:
+        radial-gradient(1000px 500px at 100% -10%, #e9f7f5 0%, rgba(233, 247, 245, 0) 70%),
+        radial-gradient(700px 420px at -5% -20%, #fff7eb 0%, rgba(255, 247, 235, 0) 70%),
+        linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+}
+
+.page {
+    width: min(980px, 92%);
+    margin: 2rem auto 3rem;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+}
+
+.hero {
+    display: grid;
+    gap: 1rem;
+}
+
+h1,
+h2 {
+    margin: 0;
+    font-family: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+    letter-spacing: 0.01em;
+}
+
+h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+h2 {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.nav-actions,
+.inline-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.btn,
+.link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 0.6rem 1rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+.btn-secondary {
+    background: var(--surface-soft);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.btn-secondary:hover {
+    border-color: #b8c8ce;
+    background: #f2f6f8;
+}
+
+.message {
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    font-weight: 600;
+}
+
+.message-success {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid #bcebd0;
+}
+
+.message-error {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid #f4c7c3;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.panel {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.table-wrap {
+    margin-top: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+    background: #fff;
+}
+
+th,
+td {
+    padding: 0.75rem 0.8rem;
+    border-bottom: 1px solid #e5ecef;
+    text-align: left;
+}
+
+th {
+    background: #f3f7f9;
+    color: #24343c;
+    font-size: 0.95rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+form {
+    display: grid;
+    gap: 0.95rem;
+    margin-top: 1rem;
+}
+
+label {
+    display: grid;
+    gap: 0.35rem;
+    color: #1f2f37;
+    font-weight: 700;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 1px solid #c6d5dc;
+    border-radius: 10px;
+    padding: 0.62rem 0.7rem;
+    font: inherit;
+    color: var(--text);
+    background: #fff;
+}
+
+textarea {
+    min-height: 98px;
+    resize: vertical;
+}
+
+.field-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+@media (max-width: 700px) {
+    .page {
+        margin-top: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+        border-radius: 14px;
+    }
+
+    .field-row {
+        grid-template-columns: 1fr;
+    }
+}

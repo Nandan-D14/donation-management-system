@@ -26,6 +26,33 @@ A Spring Boot MVC web application for managing blood and organ donations, built 
 
 ---
 
+## Sharath (SRN 823) - Updated Work
+
+Completed module: **User + Request**
+
+### Implemented Files
+- `src/main/java/com/donation/system/model/entity/User.java`
+- `src/main/java/com/donation/system/model/entity/Request.java`
+- `src/main/java/com/donation/system/service/factory/RequestFactory.java`
+- `src/main/java/com/donation/system/repository/UserRepository.java`
+- `src/main/java/com/donation/system/repository/RequestRepository.java`
+- `src/main/java/com/donation/system/controller/RequestController.java`
+- `src/main/resources/templates/requests/new.html`
+- `src/main/resources/templates/requests/index.html`
+
+### What This Module Does
+- Creates request records for blood or organ requests
+- Uses `RequestFactory` (Factory Pattern) to construct request objects
+- Uses `User` as Creator (GRASP) to create request instances
+- Provides MVC endpoints to create and list requests
+
+### Routes
+- `GET /requests`
+- `GET /requests/new`
+- `POST /requests`
+
+---
+
 ## 🧩 Design Patterns
 
 | Pattern | Implementation |

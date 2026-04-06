@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Request</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<main class="page">
+    <section class="card">
+        <h1>Create Request</h1>
+        <p>Fill the form below to create a blood or organ request.</p>
+
+        <p class="message message-error" th:if="${error}" th:text="${error}"></p>
+
+        <form action="/requests" method="post" th:object="${requestForm}">
+            <div class="field-row">
+                <label>
+                    Name
+                    <input type="text" th:field="*{name}" placeholder="Your name">
+                </label>
+                <label>
+                    Email
+                    <input type="email" th:field="*{email}" placeholder="name@example.com">
+                </label>
+            </div>
+
+            <label>
+                Request Type
+                <select th:field="*{requestType}">
+                    <option value="BLOOD">BLOOD</option>
+                    <option value="ORGAN">ORGAN</option>
+                </select>
+            </label>
+
+            <div class="field-row">
+                <label>
+                    Blood Type
+                    <input type="text" th:field="*{bloodType}" placeholder="A+">
+                </label>
+                <label>
+                    Units Requested
+                    <input type="number" min="1" th:field="*{unitsRequested}">
+                </label>
+            </div>
+
+            <label>
+                Organ Type
+                <input type="text" th:field="*{organType}" placeholder="Kidney">
+            </label>
+
+            <label>
+                Notes
+                <textarea th:field="*{notes}" placeholder="Optional notes"></textarea>
+            </label>
+
+            <div class="inline-actions">
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <a class="btn btn-secondary" href="/requests">Back to list</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

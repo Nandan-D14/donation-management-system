@@ -143,19 +143,6 @@ git push -u origin feature/<member-name>
 
 ---
 
-## 📖 Agent Skills
-
-This project includes AI agent skill files in `.agent-skills/` that define code generation rules for each team member:
-
-- `about-this-proejct/SKILL.md` — Project overview & architecture
-- `project-environment-setup/SKILL.md` — Environment setup guide
-- `nandan-admin-donation/SKILL.md` — Admin & Donation module
-- `nandani-donor-patient/SKILL.md` — Donor & Patient module
-- `sharath-user-request/SKILL.md` — User & Request module
-- `neha-inventory/SKILL.md` — Inventory module
-
----
-
 ## 🛠️ Useful Commands
 
 | Task | Command |
@@ -166,7 +153,4 @@ This project includes AI agent skill files in `.agent-skills/` that define code 
 | Skip tests | `./mvnw spring-boot:run -DskipTests` |
 
 ---
-
-## 📄 License
-
 This project is for academic purposes (OOAD Coursework).

@@ -1,24 +1,42 @@
-# Event-Driven Blood & Organ Donation Management System
+# Event-Driven Blood and Organ Donation Management System
 
-Nandan-only Spring Boot MVC application for admin and donation management.
+Spring Boot MVC application for donation management with team-based modules.
 
 ---
 
-## Scope
+## Active Modules
 
-This repository now keeps only the Nandan module:
+### Nandan (SRN 363) - Admin and Donation
+- Entities: Admin, Donation
+- Pattern: Singleton via EventManager (double-checked locking)
+- GRASP: Controller (AdminController)
+- Main routes:
+  - /login
+  - /register
+  - /admin/dashboard
+  - /admin/users
+  - /admin/users/add
+  - /admin/donations
+  - /admin/donations/add
+  - /admin/donations/update-status/{id}
+  - /admin/reports
 
-- `AdminController` as the GRASP Controller
-- `AdminService` and `DonationService` as the business logic layer
-- `Admin` and `Donation` entities
-- `AdminRepository` and `DonationRepository`
-- Thymeleaf views under `templates/admin/` and `templates/donations/`
+### Sharath (SRN 823) - User and Request
+- Entities: User, Request
+- Pattern: Factory via RequestFactory
+- GRASP: Creator (User creates request through factory)
+- Main routes:
+  - /requests
+  - /requests/new
+  - POST /requests
 
-Removed from the runtime surface:
+---
 
-- `HomeController`
-- `index.html`
-- Separate donation controller entry points
+## Current Scope Notes
+
+- Donor, Patient, and Inventory modules are not integrated yet in this branch.
+- Root route redirects to login via RootController.
+- Request module is available independently at /requests.
 
 ---
 
@@ -28,36 +46,14 @@ Removed from the runtime surface:
 |-------|------------|
 | Backend | Spring Boot 4.0.5 · Java 23 |
 | Database | MySQL 8.0+ · Spring Data JPA · Hibernate |
-| Frontend | Thymeleaf · Bootstrap 5 |
+| Frontend | Thymeleaf |
 | Build | Maven wrapper |
-
----
-
-## GRASP and Pattern
-
-| Concern | Implementation |
-|---------|----------------|
-| GRASP Controller | `AdminController` handles HTTP requests and delegates to services |
-| Repository | `AdminRepository`, `DonationRepository` |
-
----
-
-## Main Routes
-
-- `/admin/dashboard`
-- `/admin/users`
-- `/admin/users/add`
-- `/admin/donations`
-- `/admin/donations/add`
-- `/admin/donations/update-status/{id}`
-- `/admin/reports`
 
 ---
 
 ## Run
 
 ### Prerequisites
-
 - JDK 21+
 - MySQL 8.0+
 
@@ -69,7 +65,7 @@ CREATE DATABASE donationdb;
 
 ### Configure
 
-Set your MySQL password in `src/main/resources/application.properties`.
+Set MySQL credentials in src/main/resources/application.properties.
 
 ### Start
 
@@ -77,7 +73,9 @@ Set your MySQL password in `src/main/resources/application.properties`.
 ./mvnw spring-boot:run
 ```
 
-Open `/admin/dashboard` in the browser.
+Then open:
+- /login for admin flow
+- /requests for user/request flow
 
 ---
 
@@ -85,12 +83,10 @@ Open `/admin/dashboard` in the browser.
 
 | Task | Command |
 |------|---------|
-| Build | `./mvnw clean package` |
-| Test | `./mvnw test` |
-| Run | `./mvnw spring-boot:run` |
+| Build | ./mvnw clean package |
+| Test | ./mvnw test |
+| Run | ./mvnw spring-boot:run |
 
 ---
 
-## Notes
-
-The project documentation and runtime scope now reflect only Nandan's part.
+For academic use (OOAD coursework).

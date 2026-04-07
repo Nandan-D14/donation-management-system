@@ -77,6 +77,13 @@ Then open:
 - /login for admin flow
 - /requests for user/request flow
 
+### How to View Donation Module
+
+1. Open http://localhost:8080/register and create admin once.
+2. Login at http://localhost:8080/login.
+3. Go to http://localhost:8080/admin/dashboard and click donation buttons.
+4. Or open http://localhost:8080/admin/donations directly.
+
 ---
 
 ## Useful Commands

@@ -1,129 +1,153 @@
 # Event-Driven Blood & Organ Donation Management System
 
-A Spring Boot MVC web application for managing blood and organ donations, built with Java 23, MySQL, and Thymeleaf.
+A Spring Boot MVC application for managing blood and organ donations using design patterns and GRASP principles.
+
+---
+
+## 👥 Team Modules
+
+### 🔹 Nandan (SRN 363) — Admin & Donation
+
+* Entities: Admin, Donation
+* Pattern: **Singleton (EventManager)** — manages system-wide events
+* GRASP: **Controller**
+* Routes:
+
+  * `/login`, `/register`
+  * `/admin/dashboard`
+  * `/admin/users`
+  * `/admin/donations`
+  * `/admin/reports`
+
+---
+
+### 🔹 Sharath (SRN 823) — User & Request
+
+* Entities: User, Request
+* Pattern: **Factory (RequestFactory)** — creates Blood/Organ requests
+* GRASP: **Creator**
+* Routes:
+
+  * `/requests`
+  * `/requests/new`
+  * `POST /requests`
+
+---
+
+### 🔹 Neha (SRN 379) — Inventory
+
+* Entity: Inventory
+* Pattern: **Strategy Pattern**
+
+  * `MatchingStrategy` (interface)
+  * `HighPriorityMatchingStrategy` (urgent-based)
+  * `NormalMatchingStrategy` (FIFO)
+* GRASP: **Low Coupling**
+* Routes:
+
+  * `/inventory/dashboard`
+  * `/inventory/stock`
+  * `/inventory/matching`
+
+---
+
+## 🧩 Design Patterns Used
+
+| Pattern   | Module    | Purpose                 |
+| --------- | --------- | ----------------------- |
+| Singleton | Admin     | Global event management |
+| Factory   | Request   | Create request types    |
+| Strategy  | Inventory | Flexible matching logic |
+
+---
+
+## ⚙️ Matching Strategy (Inventory Module)
+
+Matching Strategy determines **how available inventory is allocated to requests**.
+
+* **HighPriorityStrategy** → handles urgent cases first
+* **NormalStrategy (FIFO)** → processes requests in order
+
+This allows dynamic switching of allocation logic without modifying core code.
 
 ---
 
 ## 🏗️ Architecture
 
-| Layer | Technology |
-|-------|------------|
-| **Backend** | Spring Boot 4.0.5 · Java 23 |
-| **Database** | MySQL 8.0+ · Spring Data JPA · Hibernate |
-| **Frontend** | Thymeleaf · Bootstrap 5 |
-| **Build** | Maven (wrapper included) |
+| Layer    | Technology                   |
+| -------- | ---------------------------- |
+| Backend  | Spring Boot 4.0.5 · Java 23  |
+| Database | MySQL 8.0+ · JPA · Hibernate |
+| Frontend | Thymeleaf                    |
+| Build    | Maven                        |
 
 ---
 
-## 👥 Team
-
-| Member | SRN | Module | Design Pattern | GRASP |
-|--------|-----|--------|----------------|-------|
-| **Nandan** | 363 | Admin, Donation | Singleton (EventManager) | Controller |
-| **Nandani** | 364 | Donor, Patient | Observer (DonationEvent) | Information Expert |
-| **Sharath** | 823 | User, Request | Factory (RequestFactory) | Creator |
-| **Neha** | 379 | Inventory | Strategy (Matching) | Low Coupling |
-
----
-
-## 🧩 Design Patterns
-
-| Pattern | Implementation |
-|---------|---------------|
-| **Singleton** | `EventManager` — manages donation events globally |
-| **Observer** | `Donor` notifies, `Patient` receives donation alerts |
-| **Factory** | `RequestFactory` creates Blood/Organ requests |
-| **Strategy** | `MatchingStrategy` — priority-based vs FIFO matching |
-
----
-
-## 🚀 Quick Start
+## 🚀 Run
 
 ### Prerequisites
-- JDK 21+
-- MySQL 8.0+
-- Git
 
-### 1. Clone & Setup
-```bash
-git clone https://github.com/Nandan-D14/donation-management-system.git
-cd donation-management-system
-```
+* JDK 21+
+* MySQL 8+
 
-### 2. Database Setup
+### Database
+
 ```sql
 CREATE DATABASE donationdb;
 ```
 
-### 3. Configure
-Edit `src/main/resources/application.properties`:
-```properties
-spring.datasource.password=YOUR_MYSQL_PASSWORD
+### Configure
+
+Update:
+
+```
+src/main/resources/application.properties
 ```
 
-### 4. Run
+### Start
+
 ```bash
 ./mvnw spring-boot:run
 ```
 
-### 5. Access
-Open `http://localhost:8080` in your browser.
+---
+
+## 🌐 Access
+
+* Admin → `/login`
+* Requests → `/requests`
+* Inventory → `/inventory/dashboard`
 
 ---
 
-## 📁 Project Structure
+## 📊 Features
 
-```
-src/main/java/com/donation/system/
-├── model/
-│   ├── entity/       → JPA entities (User, Donor, Patient, Admin, Donation, Request, Inventory)
-│   ├── dto/          → Data Transfer Objects
-│   └── enums/        → BloodType, RequestStatus, DonationType
-├── repository/       → Spring Data JPA interfaces
-├── service/
-│   ├── factory/      → RequestFactory
-│   ├── observer/     → DonationSubject, DonationObserver
-│   ├── singleton/    → EventManager
-│   └── strategy/     → MatchingStrategy, HighPriorityStrategy, NormalStrategy
-├── controller/       → @Controller classes
-└── resources/
-    ├── templates/    → Thymeleaf HTML views
-    └── application.properties
-```
+* Inventory management (add/view stock)
+* Low stock detection
+* Strategy-based allocation logic
+* MySQL integration
+* MVC architecture
 
 ---
 
-## 🌿 Git Workflow
+## 📌 Notes
 
-| Branch | Purpose |
-|--------|---------|
-| `main` | Stable, production-ready code |
-| `feature/singleton` | Nandan — Admin, Donation, EventManager |
-| `feature/observer` | Nandani — Donor, Patient, Observer |
-| `feature/factory` | Sharath — User, Request, Factory |
-| `feature/strategy` | Neha — Inventory, Strategy |
-
-### Creating a feature branch
-```bash
-git checkout -b feature/<member-name>
-git push -u origin feature/<member-name>
-```
-
-### Merging
-1. Push your feature branch
-2. Create a Pull Request on GitHub
-3. Code review → Merge to `main`
+* Inventory module works independently with low coupling
+* Data is persisted in MySQL
+* Thymeleaf used for dynamic UI rendering
 
 ---
 
-## 🛠️ Useful Commands
+## 🛠️ Commands
 
-| Task | Command |
-|------|---------|
-| Build | `./mvnw clean package` |
-| Run | `./mvnw spring-boot:run` |
-| Test | `./mvnw test` |
-| Skip tests | `./mvnw spring-boot:run -DskipTests` |
+| Task  | Command                  |
+| ----- | ------------------------ |
+| Run   | `./mvnw spring-boot:run` |
+| Build | `./mvnw clean package`   |
+| Test  | `./mvnw test`            |
 
 ---
-This project is for academic purposes (OOAD Coursework).
+
+## 📄 License
+
+Academic use (OOAD coursework)

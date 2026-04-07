@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Admins</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Admin List</h1>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="admin : ${admins}">
+                    <td th:text="${admin.adminID}"></td>
+                    <td th:text="${admin.name}"></td>
+                    <td th:text="${admin.mail}"></td>
+                    <td th:text="${admin.phone}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(admins)}">
+                    <td colspan="4">No admins found</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</body>
+</html>

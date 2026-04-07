@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requests</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<main class="page">
+    <section class="card">
+        <h1>Requests</h1>
+        <p>Track all blood and organ requests created in the system.</p>
+
+        <p class="message message-success" th:if="${message}" th:text="${message}"></p>
+
+        <div class="inline-actions" style="margin-top:0.9rem;">
+            <a class="btn btn-primary" href="/requests/new">Create Request</a>
+            <a class="btn btn-secondary" href="/">Home</a>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Details</th>
+                    <th>User</th>
+                    <th>Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(requests)}">
+                    <td colspan="5">No requests yet.</td>
+                </tr>
+                <tr th:each="r : ${requests}">
+                    <td th:text="${r.id}"></td>
+                    <td th:text="${r.requestType}"></td>
+                    <td th:text="${r.requestDetails}"></td>
+                    <td th:text="${r.createdBy.name}"></td>
+                    <td th:text="${r.createdAt}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

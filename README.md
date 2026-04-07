@@ -1,61 +1,94 @@
-# Event-Driven Blood and Organ Donation Management System
+# Event-Driven Blood & Organ Donation Management System
 
-Spring Boot MVC application for donation management with team-based modules.
-
----
-
-## Active Modules
-
-### Nandan (SRN 363) - Admin and Donation
-- Entities: Admin, Donation
-- Pattern: Singleton via EventManager (double-checked locking)
-- GRASP: Controller (AdminController)
-- Main routes:
-  - /login
-  - /register
-  - /admin/dashboard
-  - /admin/users
-  - /admin/users/add
-  - /admin/donations
-  - /admin/donations/add
-  - /admin/donations/update-status/{id}
-  - /admin/reports
-
-### Sharath (SRN 823) - User and Request
-- Entities: User, Request
-- Pattern: Factory via RequestFactory
-- GRASP: Creator (User creates request through factory)
-- Main routes:
-  - /requests
-  - /requests/new
-  - POST /requests
+A Spring Boot MVC application for managing blood and organ donations using design patterns and GRASP principles.
 
 ---
 
-## Current Scope Notes
+## 👥 Team Modules
 
-- Donor, Patient, and Inventory modules are not integrated yet in this branch.
-- Root route redirects to login via RootController.
-- Request module is available independently at /requests.
+### 🔹 Nandan (SRN 363) — Admin & Donation
 
----
+* Entities: Admin, Donation
+* Pattern: **Singleton (EventManager)** — manages system-wide events
+* GRASP: **Controller**
+* Routes:
 
-## Architecture
-
-| Layer | Technology |
-|-------|------------|
-| Backend | Spring Boot 4.0.5 · Java 23 |
-| Database | MySQL 8.0+ · Spring Data JPA · Hibernate |
-| Frontend | Thymeleaf |
-| Build | Maven wrapper |
+  * `/login`, `/register`
+  * `/admin/dashboard`
+  * `/admin/users`
+  * `/admin/donations`
+  * `/admin/reports`
 
 ---
 
-## Run
+### 🔹 Sharath (SRN 823) — User & Request
+
+* Entities: User, Request
+* Pattern: **Factory (RequestFactory)** — creates Blood/Organ requests
+* GRASP: **Creator**
+* Routes:
+
+  * `/requests`
+  * `/requests/new`
+  * `POST /requests`
+
+---
+
+### 🔹 Neha (SRN 379) — Inventory
+
+* Entity: Inventory
+* Pattern: **Strategy Pattern**
+
+  * `MatchingStrategy` (interface)
+  * `HighPriorityMatchingStrategy` (urgent-based)
+  * `NormalMatchingStrategy` (FIFO)
+* GRASP: **Low Coupling**
+* Routes:
+
+  * `/inventory/dashboard`
+  * `/inventory/stock`
+  * `/inventory/matching`
+
+---
+
+## 🧩 Design Patterns Used
+
+| Pattern   | Module    | Purpose                 |
+| --------- | --------- | ----------------------- |
+| Singleton | Admin     | Global event management |
+| Factory   | Request   | Create request types    |
+| Strategy  | Inventory | Flexible matching logic |
+
+---
+
+## ⚙️ Matching Strategy (Inventory Module)
+
+Matching Strategy determines **how available inventory is allocated to requests**.
+
+* **HighPriorityStrategy** → handles urgent cases first
+* **NormalStrategy (FIFO)** → processes requests in order
+
+This allows dynamic switching of allocation logic without modifying core code.
+
+---
+
+## 🏗️ Architecture
+
+| Layer    | Technology                   |
+| -------- | ---------------------------- |
+| Backend  | Spring Boot 4.0.5 · Java 23  |
+| Database | MySQL 8.0+ · JPA · Hibernate |
+| Frontend | Thymeleaf                    |
+| Build    | Maven                        |
+
+---
+
+## 🚀 Run
 
 ### Prerequisites
-- JDK 21+
-- MySQL 8.0+
+
+* JDK 21+
+* MySQL 8+
 
 ### Database
 
@@ -65,7 +98,11 @@ CREATE DATABASE donationdb;
 
 ### Configure
 
-Set MySQL credentials in src/main/resources/application.properties.
+Update:
+
+```
+src/main/resources/application.properties
+```
 
 ### Start
 
@@ -73,27 +110,44 @@ Set MySQL credentials in src/main/resources/application.properties.
 ./mvnw spring-boot:run
 ```
 
-Then open:
-- /login for admin flow
-- /requests for user/request flow
+---
 
-### How to View Donation Module
+## 🌐 Access
 
-1. Open http://localhost:8080/register and create admin once.
-2. Login at http://localhost:8080/login.
-3. Go to http://localhost:8080/admin/dashboard and click donation buttons.
-4. Or open http://localhost:8080/admin/donations directly.
+* Admin → `/login`
+* Requests → `/requests`
+* Inventory → `/inventory/dashboard`
 
 ---
 
-## Useful Commands
+## 📊 Features
 
-| Task | Command |
-|------|---------|
-| Build | ./mvnw clean package |
-| Test | ./mvnw test |
-| Run | ./mvnw spring-boot:run |
+* Inventory management (add/view stock)
+* Low stock detection
+* Strategy-based allocation logic
+* MySQL integration
+* MVC architecture
 
 ---
 
-For academic use (OOAD coursework).
+## 📌 Notes
+
+* Inventory module works independently with low coupling
+* Data is persisted in MySQL
+* Thymeleaf used for dynamic UI rendering
+
+---
+
+## 🛠️ Commands
+
+| Task  | Command                  |
+| ----- | ------------------------ |
+| Run   | `./mvnw spring-boot:run` |
+| Build | `./mvnw clean package`   |
+| Test  | `./mvnw test`            |
+
+---
+
+## 📄 License
+
+Academic use (OOAD coursework)

@@ -1,40 +1,45 @@
 package com.donation.system.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.donation.system.model.entity.Donor;
+import com.donation.system.service.DonorService;
 
 @Controller
 @RequestMapping("/donor")
 public class DonorController {
 
-    // 👉 Dashboard page
+    private final DonorService donorService;
+
+    public DonorController(DonorService donorService) {
+        this.donorService = donorService;
+    }
+
+    // Dashboard
     @GetMapping("/dashboard")
     public String dashboard() {
         return "donor/dashboard";
     }
 
-    // 👉 Show donate form
+    // Show donate page
     @GetMapping("/donate")
     public String donatePage() {
         return "donor/donate";
     }
 
-    // 👉 Handle donation form submission
+    // Save donor to DB
     @PostMapping("/donate")
-    public String donate() {
-        // You can add logic later (save to DB)
+    public String donate(@ModelAttribute Donor donor) {
+        donorService.saveDonor(donor);
         return "redirect:/donor/status";
     }
 
-    // 👉 Show donation status
+    // Show donation status
     @GetMapping("/status")
-    public String status() {
+    public String status(Model model) {
+        model.addAttribute("donations", donorService.getAll());
         return "donor/status";
-    }
-
-    // 👉 Register donor (optional)
-    @PostMapping("/register")
-    public String register() {
-        return "redirect:/donor/dashboard";
     }
 }

@@ -7,8 +7,23 @@
 
 <h1>Track Request 📍</h1>
 
-<p>Your request status will be shown here.</p>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Blood</th>
+        <th>Organ</th>
+        <th>Status</th>
+    </tr>
 
+    <tr th:each="p : ${requests}">
+        <td th:text="${p.name}"></td>
+        <td th:text="${p.requiredBloodType}"></td>
+        <td th:text="${p.requiredOrgan}"></td>
+        <td th:text="${p.status}"></td>
+    </tr>
+</table>
+
+<br>
 <a href="/patient/dashboard">Back</a>
 
 </body>

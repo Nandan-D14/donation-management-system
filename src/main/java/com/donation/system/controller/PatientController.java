@@ -1,40 +1,41 @@
 package com.donation.system.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.donation.system.model.entity.Patient;
+import com.donation.system.service.PatientService;
 
 @Controller
 @RequestMapping("/patient")
 public class PatientController {
 
-    // 👉 Dashboard page
+    private final PatientService service;
+
+    public PatientController(PatientService service) {
+        this.service = service;
+    }
+
     @GetMapping("/dashboard")
     public String dashboard() {
         return "patient/dashboard";
     }
 
-    // 👉 Show request form
     @GetMapping("/request")
     public String requestPage() {
         return "patient/request";
     }
 
-    // 👉 Handle request form
     @PostMapping("/request")
-    public String request() {
-        // You can add logic later (save to DB)
+    public String save(@ModelAttribute Patient p) {
+        service.registerPatient(p);
         return "redirect:/patient/track";
     }
 
-    // 👉 Track request status
     @GetMapping("/track")
-    public String track() {
+    public String track(Model model) {
+        model.addAttribute("requests", service.getAllRequests());
         return "patient/track";
-    }
-
-    // 👉 Register patient (optional)
-    @PostMapping("/register")
-    public String register() {
-        return "redirect:/patient/dashboard";
     }
 }

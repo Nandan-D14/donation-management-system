@@ -1,18 +1,18 @@
 package com.donation.system.service.observer;
 
 import org.springframework.context.ApplicationEvent;
-import com.donation.system.model.entity.Donation;
+import com.donation.system.model.entity.Donor;
 
 public class DonationEvent extends ApplicationEvent {
 
-    private final Donation donation;
+    private final Donor donor;
 
-    public DonationEvent(Object source, Donation donation) {
+    public DonationEvent(Object source, Donor donor) {
         super(source);
-        this.donation = donation;
+        this.donor = donor;
     }
 
-    public Donation getDonation() {
-        return donation;
+    public Donor getDonor() {
+        return donor;
     }
 }

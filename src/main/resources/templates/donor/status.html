@@ -7,8 +7,23 @@
 
 <h1>Donation Status 📊</h1>
 
-<p>Your donation details will appear here.</p>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Blood Type</th>
+        <th>Organ</th>
+        <th>Status</th>
+    </tr>
 
+    <tr th:each="d : ${donations}">
+        <td th:text="${d.name}"></td>
+        <td th:text="${d.bloodType}"></td>
+        <td th:text="${d.organType}"></td>
+        <td th:text="${d.status}"></td>
+    </tr>
+</table>
+
+<br>
 <a href="/donor/dashboard">Back</a>
 
 </body>

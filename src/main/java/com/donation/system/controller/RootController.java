@@ -3,6 +3,7 @@ package com.donation.system.controller;
 import com.donation.system.model.entity.Admin;
 import com.donation.system.service.AdminService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Handles authentication pages and root redirection.
  */
 @Controller
+@RequestMapping("/admin-auth")
 public class RootController {
 
     private final AdminService adminService;
@@ -21,9 +23,9 @@ public class RootController {
         this.adminService = adminService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     public String root() {
-        return "redirect:/login";
+        return "redirect:/admin-auth/login";
     }
 
     @GetMapping("/login")
@@ -69,6 +71,6 @@ public class RootController {
         }
 
         adminService.saveAdmin(registerAdmin);
-        return "redirect:/login?success=registered";
+        return "redirect:/admin-auth/login?success=registered";
     }
 }

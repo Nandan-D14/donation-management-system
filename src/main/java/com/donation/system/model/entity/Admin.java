@@ -19,7 +19,7 @@ public class Admin {
     private String name;
     private String mail;
     private String password;
-    private int phone;
+    private Long phone;
 
     public void manageUsers() {
         System.out.println("Admin managing users");

@@ -40,6 +40,8 @@ build/
 
 ### Agent Skills ###
 .agent-skills/
+.agent-skills.zip
+agent-skills.zip
 
 ### Logs ###
 *.log

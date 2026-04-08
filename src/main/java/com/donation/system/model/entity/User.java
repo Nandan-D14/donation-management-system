@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "request_users")
 @Data
@@ -22,7 +24,22 @@ public class User {
     @Column(nullable = false, unique = true)
     private String mail;
 
+    private String password;
+
+    private Integer phone;
+
     private String role;
+
+    public boolean login(String inputMail, String inputPassword) {
+        return Objects.equals(mail, inputMail) && Objects.equals(password, inputPassword);
+    }
+
+    public void register() { }
+
+    public void updateProfile(String updatedName, Integer updatedPhone) {
+        this.name = updatedName;
+        this.phone = updatedPhone;
+    }
 
     /**
      * GRASP Creator: User creates blood request objects via the factory.

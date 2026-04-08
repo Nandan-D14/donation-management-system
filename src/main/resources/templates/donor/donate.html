@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Donate</title>
+</head>
+<body>
+
+<h1>Donate Blood / Organ 🩸</h1>
+
+<form action="/donor/donate" method="post">
+    <label>Name:</label><br>
+    <input type="text" name="name"><br><br>
+
+    <label>Blood Type:</label><br>
+    <input type="text" name="bloodType"><br><br>
+
+    <label>Organ Type:</label><br>
+    <input type="text" name="organType"><br><br>
+
+    <button type="submit">Donate</button>
+</form>
+
+<br>
+<a href="/donor/dashboard">Back</a>
+
+</body>
+</html>

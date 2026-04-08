@@ -40,7 +40,7 @@ A Spring Boot MVC web application for managing blood and organ donations, built 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- JDK 21+
+- JDK 17+
 - MySQL 8.0+
 - Git
 

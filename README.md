@@ -1,9 +1,13 @@
 ## please refer sub branches for indivdual CODES.
-`379/Inventory(Neha)`
-`823/Creator + requests(Shrath)`
-`Sharath/823`
-`Feature/Controller`
-`nandini-donor-patient`
+
+| Branches |
+|-------|
+| **823/Creator + requests(Shrath)** |
+| **Sharath/823** |
+| **Feature/Controller** |
+| **nandini-donor-patient** |
+| **379/Inventory(Neha)** |
+
 
 ---
 

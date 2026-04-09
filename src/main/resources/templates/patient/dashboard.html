@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patient Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel" style="max-width: 860px; margin: 0 auto;">
+        <h1 class="title-xl">Patient Dashboard</h1>
+        <p class="subtitle">Signed in as <strong th:text="${userName}">Patient</strong></p>
+
+        <div class="row">
+            <a href="/patient/request" class="btn btn-primary">Create Request</a>
+            <a href="/patient/track" class="btn btn-accent">Track Requests</a>
+            <a href="/" class="btn btn-secondary">Home</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Donations</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <style>
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .status-submitted { background: #dbeafe; color: #1e40af; }
+        .status-allocated { background: #dcfce7; color: #166534; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Donation Records</h1>
+        <p class="subtitle">All donations logged in the system.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Specification</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Allocated</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="donation : ${donations}">
+                    <td th:text="${donation.id}">1</td>
+                    <td th:text="${donation.donationType}">BLOOD</td>
+                    <td th:text="${donation.bloodType != null ? donation.bloodType : (donation.organType != null ? donation.organType : '-')}">O+</td>
+                    <td th:text="${donation.quantity}">1</td>
+                    <td th:text="${#temporals.format(donation.date, 'yyyy-MM-dd HH:mm')}">2026-04-08 22:00</td>
+                    <td>
+                        <span class="status-badge" th:classappend="${donation.status.equalsIgnoreCase('SUBMITTED') ? 'status-submitted' : (donation.status.equalsIgnoreCase('ALLOCATED') ? 'status-allocated' : 'status-pending')}" th:text="${donation.status}">PENDING</span>
+                    </td>
+                    <td>
+                        <span th:if="${donation.allocatedStatus != null and donation.allocatedStatus.equalsIgnoreCase('ALLOCATED')}" class="status-badge status-allocated">Allocated</span>
+                        <span th:if="${donation.allocatedStatus == null or donation.allocatedStatus.equalsIgnoreCase('NOT_ALLOCATED')}" style="color: #9ca3af;">Available</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(donations)}">
+                    <td colspan="7">No donations found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <a href="/admin/donations/add" class="btn btn-primary">New Donation</a>
+            <a href="/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

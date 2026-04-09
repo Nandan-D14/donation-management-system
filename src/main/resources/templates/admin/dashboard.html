@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Admin Dashboard</h1>
+        <p class="subtitle" th:text="${message}">Welcome to Admin Dashboard</p>
+
+        <div class="kpis">
+            <div class="kpi">
+                <p class="kpi-label">Total Donations</p>
+                <p class="kpi-value" th:text="${donationCount}">0</p>
+            </div>
+            <div class="kpi">
+                <p class="kpi-label">Total Admins</p>
+                <p class="kpi-value" th:text="${adminCount}">0</p>
+            </div>
+            <div class="kpi">
+                <p class="kpi-label">Donation Events</p>
+                <p class="kpi-value" th:text="${eventCount}">0</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <a href="/admin/users" class="btn btn-primary">Manage Admins</a>
+            <a href="/admin/users/add" class="btn btn-accent">Add Admin</a>
+            <a href="/admin/donations" class="btn btn-primary">View Donations</a>
+            <a href="/admin/donations/add" class="btn btn-accent">Record Donation</a>
+            <a href="/admin/requests" class="btn btn-accent">Review Requests</a>
+            <a href="/inventory" class="btn btn-primary">Inventory</a>
+            <a href="/admin/reports" class="btn btn-secondary">Reports</a>
+            <a href="/" class="btn btn-secondary">Home</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

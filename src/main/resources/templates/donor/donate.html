@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Donate</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <style>
+        .field-hidden { display: none; }
+    </style>
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel" style="max-width: 760px; margin: 0 auto;">
+        <h1 class="title-xl">Create Donation</h1>
+        <p class="subtitle">Submit blood or organ donation details.</p>
+
+        <div th:if="${error}" class="notice" th:text="${error}"></div>
+
+        <form action="/donor/donate" method="post" class="form-grid">
+            <div>
+                <label for="donationType">Donation Type</label>
+                <select id="donationType" name="donationType" required onchange="updateTypeFields()">
+                    <option value="">-- Select Type --</option>
+                    <option value="BLOOD">Blood</option>
+                    <option value="ORGAN">Organ</option>
+                </select>
+            </div>
+
+            <div id="bloodTypeField" class="field-hidden">
+                <label for="bloodType">Blood Type</label>
+                <select id="bloodType" name="bloodType">
+                    <option value="">-- Select Blood Type --</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+
+            <div id="organTypeField" class="field-hidden">
+                <label for="organType">Organ Type</label>
+                <select id="organType" name="organType">
+                    <option value="">-- Select Organ Type --</option>
+                    <option value="Kidney">Kidney</option>
+                    <option value="Liver">Liver</option>
+                    <option value="Heart">Heart</option>
+                    <option value="Pancreas">Pancreas</option>
+                    <option value="Cornea">Cornea</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="quantity">Quantity (Units)</label>
+                <input id="quantity" type="number" name="quantity" min="1" required placeholder="e.g., 1 unit">
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Submit Donation</button>
+                <a href="/donor/dashboard" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+<script>
+    function updateTypeFields() {
+        const donationType = document.getElementById('donationType').value;
+        const bloodField = document.getElementById('bloodTypeField');
+        const organField = document.getElementById('organTypeField');
+
+        if (donationType === 'BLOOD') {
+            bloodField.classList.remove('field-hidden');
+            organField.classList.add('field-hidden');
+            document.getElementById('bloodType').required = true;
+            document.getElementById('organType').required = false;
+            document.getElementById('organType').value = '';
+        } else if (donationType === 'ORGAN') {
+            bloodField.classList.add('field-hidden');
+            organField.classList.remove('field-hidden');
+            document.getElementById('bloodType').required = false;
+            document.getElementById('organType').required = true;
+            document.getElementById('bloodType').value = '';
+        } else {
+            bloodField.classList.add('field-hidden');
+            organField.classList.add('field-hidden');
+            document.getElementById('bloodType').required = false;
+            document.getElementById('organType').required = false;
+            document.getElementById('bloodType').value = '';
+            document.getElementById('organType').value = '';
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inventory Stock</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Inventory Stock</h1>
+        <p class="subtitle">Add or reduce blood/organ stock.</p>
+
+        <div th:if="${message}" class="notice" th:text="${message}"></div>
+        <div th:if="${error}" class="notice" style="border-color:#ef4444; background:#fff1f2; color:#991b1b;" th:text="${error}"></div>
+
+        <div class="kpis" style="margin-bottom:20px;">
+            <div class="kpi">
+                <p class="kpi-label">Total Items</p>
+                <p class="kpi-value" th:text="${inventoryItems.size()}">0</p>
+            </div>
+        </div>
+
+        <h2 style="margin:12px 0;">Add Stock</h2>
+        <form th:action="@{/inventory/stock/add}" method="post" class="form-grid">
+            <div>
+                <label for="addBloodType">Blood Type (optional)</label>
+                <input id="addBloodType" name="bloodType" type="text" placeholder="A+, O-">
+            </div>
+            <div>
+                <label for="addOrganType">Organ Type (optional)</label>
+                <input id="addOrganType" name="organType" type="text" placeholder="Kidney, Liver">
+            </div>
+            <div>
+                <label for="addAmount">Amount</label>
+                <input id="addAmount" name="amount" type="number" min="1" required>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Add Stock</button>
+            </div>
+        </form>
+
+        <h2 style="margin:18px 0 12px;">Reduce Stock</h2>
+        <form th:action="@{/inventory/stock/reduce}" method="post" class="form-grid">
+            <div>
+                <label for="reduceBloodType">Blood Type (optional)</label>
+                <input id="reduceBloodType" name="bloodType" type="text" placeholder="A+, O-">
+            </div>
+            <div>
+                <label for="reduceOrganType">Organ Type (optional)</label>
+                <input id="reduceOrganType" name="organType" type="text" placeholder="Kidney, Liver">
+            </div>
+            <div>
+                <label for="reduceAmount">Amount</label>
+                <input id="reduceAmount" name="amount" type="number" min="1" required>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-secondary">Reduce Stock</button>
+                <a href="/inventory/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </form>
+
+        <h2 style="margin:18px 0 12px;">Current Stock</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Blood Type</th>
+                    <th>Organ Type</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${inventoryItems}">
+                    <td th:text="${item.id}">1</td>
+                    <td th:text="${item.bloodType != null ? item.bloodType : '-'}">-</td>
+                    <td th:text="${item.organType != null ? item.organType : '-'}">-</td>
+                    <td th:text="${item.quantity}">0</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(inventoryItems)}">
+                    <td colspan="4">No stock found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

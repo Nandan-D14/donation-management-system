@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reports</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Reports</h1>
+        <p class="subtitle">Operational snapshot of donation activity.</p>
+
+        <div class="kpis">
+            <div class="kpi">
+                <p class="kpi-label">Total Rows</p>
+                <p class="kpi-value" th:text="${donations.size()}">0</p>
+            </div>
+            <div class="kpi">
+                <p class="kpi-label">Donation Count</p>
+                <p class="kpi-value" th:text="${donationCount}">0</p>
+            </div>
+            <div class="kpi">
+                <p class="kpi-label">Event Count</p>
+                <p class="kpi-value" th:text="${eventCount}">0</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Specification</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="d : ${donations}">
+                    <td th:text="${d.id}">1</td>
+                    <td th:text="${d.donationType}">BLOOD</td>
+                    <td th:text="${d.bloodType != null ? d.bloodType : (d.organType != null ? d.organType : '-')}">O+</td>
+                    <td th:text="${d.quantity}">1</td>
+                    <td th:text="${d.status}">PENDING</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(donations)}">
+                    <td colspan="5">No donations found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <a href="/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

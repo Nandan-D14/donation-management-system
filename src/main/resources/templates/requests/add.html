@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Request</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel" style="max-width: 760px; margin: 0 auto;">
+        <h1 class="title-xl">Create Request</h1>
+        <p class="subtitle">Create blood or organ requests for patients.</p>
+        <p class="text-muted" th:if="${currentUserMail != null}">Logged in as <span th:text="${currentUserMail}"></span></p>
+
+        <div th:if="${error}" class="notice" th:text="${error}"></div>
+
+        <form th:action="@{/requests/create}" method="post" class="form-grid">
+            <div>
+                <label for="requestType">Request Type</label>
+                <select id="requestType" name="requestType" required>
+                    <option value="BLOOD">Blood</option>
+                    <option value="ORGAN">Organ</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="detail">Detail (Blood Group or Organ Type)</label>
+                <input id="detail" type="text" name="detail" placeholder="A+, O-, Kidney, Liver" required>
+            </div>
+
+            <div>
+                <label for="quantity">Quantity</label>
+                <input id="quantity" type="number" name="quantity" min="1" required>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Submit Request</button>
+                <a href="/requests/list" class="btn btn-secondary">View Requests</a>
+                <a href="/" class="btn btn-secondary">Home</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

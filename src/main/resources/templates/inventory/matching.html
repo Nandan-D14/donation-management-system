@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inventory Matching</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Donation-Request Matching</h1>
+        <p class="subtitle">Preview pending requests and switch matching strategy.</p>
+
+        <form th:action="@{/inventory/matching/strategy}" method="post" class="row" style="margin-bottom:16px;">
+            <label for="strategy" style="min-width:120px; font-weight:600;">Strategy</label>
+            <select id="strategy" name="strategy" style="max-width:220px;" th:value="${strategy}">
+                <option value="NORMAL" th:selected="${strategy == 'NORMAL'}">Normal (FIFO)</option>
+                <option value="HIGH_PRIORITY" th:selected="${strategy == 'HIGH_PRIORITY'}">High Priority</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Apply Strategy</button>
+            <a href="/inventory/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        </form>
+
+        <h2 style="margin:16px 0 10px;">Pending Requests</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Detail</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="req : ${requests}">
+                    <td th:text="${req.id}">1</td>
+                    <td th:text="${req.requestType}">BLOOD</td>
+                    <td th:text="${req.requestDetail}">O+</td>
+                    <td th:text="${req.quantity}">1</td>
+                    <td th:text="${req.status}">PENDING</td>
+                    <td th:text="${#temporals.format(req.createdAt, 'yyyy-MM-dd HH:mm')}">2026-04-09 12:00</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(requests)}">
+                    <td colspan="6">No pending requests.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 style="margin:16px 0 10px;">Current Inventory</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Blood Type</th>
+                    <th>Organ Type</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${inventoryItems}">
+                    <td th:text="${item.id}">1</td>
+                    <td th:text="${item.bloodType != null ? item.bloodType : '-'}">-</td>
+                    <td th:text="${item.organType != null ? item.organType : '-'}">-</td>
+                    <td th:text="${item.quantity}">0</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(inventoryItems)}">
+                    <td colspan="4">No inventory records found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,7 +1,40 @@
 <!DOCTYPE html>
-<html>
-<head><title>Donation System</title></head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Donation Management System</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
 <body>
-    <h1>Blood & Organ Donation System ✅</h1>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Donation Management System</h1>
+        <p class="subtitle">A single portal for donor, patient, and admin workflows.</p>
+
+        <div class="grid-3">
+            <article class="card">
+                <h3>Donor</h3>
+                <p class="text-muted">Submit blood or organ donations and track status updates.</p>
+                <a class="btn btn-primary" href="/donor/dashboard">Open Donor Dashboard</a>
+            </article>
+
+            <article class="card">
+                <h3>Patient</h3>
+                <p class="text-muted">Create requests and monitor progress in one place.</p>
+                <a class="btn btn-primary" href="/patient/dashboard">Open Patient Dashboard</a>
+            </article>
+
+            <article class="card">
+                <h3>Admin</h3>
+                <p class="text-muted">Manage admins, donations, inventory, and reports.</p>
+                <a class="btn btn-accent" href="/admin/dashboard">Open Admin Dashboard</a>
+            </article>
+        </div>
+
+        <div class="row">
+            <a class="btn btn-secondary" href="/login">Login</a>
+            <a class="btn btn-secondary" href="/register">Register</a>
+        </div>
+    </section>
+</main>
 </body>
 </html>

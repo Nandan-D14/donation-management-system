@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel" style="max-width: 520px; margin: 0 auto;">
+        <h1 class="title-xl">Login</h1>
+        <p class="subtitle">Sign in to access donor, patient, or admin modules.</p>
+
+        <div th:if="${error}" class="notice" th:text="${error}"></div>
+        <div th:if="${success}" style="margin-top:12px; padding:10px 12px; border-radius:10px; border:1px solid #bbf7d0; background:#f0fdf4; color:#166534;" th:text="${success}"></div>
+
+        <form th:action="@{/login}" method="post" class="form-grid">
+            <div>
+                <label for="mail">Email</label>
+                <input id="mail" type="email" name="mail" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" required>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary" type="submit">Login</button>
+                <a href="/register" class="btn btn-secondary">Register</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Request List</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">All Requests</h1>
+
+        <div class="row">
+            <a href="/requests/create" class="btn btn-primary">Create Request</a>
+            <a href="/" class="btn btn-secondary">Home</a>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Detail</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="req : ${requests}">
+                    <td th:text="${req.id}">1</td>
+                    <td th:text="${req.createdBy != null ? req.createdBy.name : '-'}">User</td>
+                    <td th:text="${req.createdBy != null ? req.createdBy.mail : '-'}">mail@example.com</td>
+                    <td th:text="${req.requestType}">BLOOD</td>
+                    <td th:text="${req.requestDetail}">O+</td>
+                    <td th:text="${req.quantity}">1</td>
+                    <td th:text="${req.status}">PENDING</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(requests)}">
+                    <td colspan="7">No requests found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

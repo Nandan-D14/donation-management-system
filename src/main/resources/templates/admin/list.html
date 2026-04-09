@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Admins</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Manage Admins</h1>
+        <p class="subtitle">List of admin accounts with contact information.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="admin : ${admins}">
+                    <td th:text="${admin.id}">1</td>
+                    <td th:text="${admin.name}">Admin</td>
+                    <td th:text="${admin.mail}">admin@mail.com</td>
+                    <td th:text="${admin.phone != null ? admin.phone : '-'}">-</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(admins)}">
+                    <td colspan="4">No admins found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <a href="/admin/users/add" class="btn btn-primary">Add Admin</a>
+            <a href="/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

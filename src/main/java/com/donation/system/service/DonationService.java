@@ -9,50 +9,48 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * DonationService handles donation-related data access and persistence.
+ * Donation service for admin reports and status updates.
  *
- * @author Nandan (SRN 363)
+ * @author Team
  */
 @Service
 public class DonationService {
 
-    private final DonationRepository donationRepo;
+    private final DonationRepository donationRepository;
     private final EventManager eventManager;
 
-    public DonationService(DonationRepository donationRepo) {
-        this.donationRepo = donationRepo;
+    public DonationService(DonationRepository donationRepository) {
+        this.donationRepository = donationRepository;
         this.eventManager = EventManager.getInstance();
     }
 
     public List<Donation> getAllDonations() {
-        return donationRepo.findAll();
+        return donationRepository.findAll();
     }
 
     public Optional<Donation> getDonationById(int id) {
-        return donationRepo.findById(id);
-    }
-
-    public List<Donation> getDonationsByStatus(String status) {
-        return donationRepo.findByStatus(status);
+        return donationRepository.findById(id);
     }
 
     public Donation recordDonation(Donation donation) {
-        Donation savedDonation = donationRepo.save(donation);
+        Donation savedDonation = donationRepository.save(donation);
         eventManager.logEvent(savedDonation);
         return savedDonation;
     }
 
     public Donation updateStatus(int id, String status) {
-        return donationRepo.findById(id).map(donation -> {
-            donation.updateStatus(status);
-            Donation updatedDonation = donationRepo.save(donation);
-            eventManager.logEvent(updatedDonation);
-            return updatedDonation;
-        }).orElse(null);
+        return donationRepository.findById(id)
+                .map(donation -> {
+                    donation.updateStatus(status);
+                    Donation updated = donationRepository.save(donation);
+                    eventManager.logEvent(updated);
+                    return updated;
+                })
+                .orElse(null);
     }
 
     public long getDonationCount() {
-        return donationRepo.count();
+        return donationRepository.count();
     }
 
     public int getEventCount() {

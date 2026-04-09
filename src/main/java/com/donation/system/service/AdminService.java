@@ -8,42 +8,35 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * AdminService handles admin-related data access and persistence.
+ * Admin data access service.
  *
- * @author Nandan (SRN 363)
+ * @author Team
  */
 @Service
 public class AdminService {
 
-    private final AdminRepository adminRepo;
+    private final AdminRepository adminRepository;
 
-    public AdminService(AdminRepository adminRepo) {
-        this.adminRepo = adminRepo;
+    public AdminService(AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
     }
 
     public List<Admin> getAllAdmins() {
-        return adminRepo.findAll();
-    }
-
-    public Optional<Admin> getAdminById(int id) {
-        return adminRepo.findById(id);
+        return adminRepository.findAll();
     }
 
     public Optional<Admin> getAdminByMail(String mail) {
-        return adminRepo.findByMail(mail);
+        return adminRepository.findByMail(mail);
     }
 
     public Admin saveAdmin(Admin admin) {
-        return adminRepo.save(admin);
-    }
-
-    public boolean isMailRegistered(String mail) {
-        return adminRepo.findByMail(mail).isPresent();
+        admin.setRole("ADMIN");
+        return adminRepository.save(admin);
     }
 
     public boolean authenticate(String mail, String password) {
-        return adminRepo.findByMail(mail)
-                .map(admin -> admin.getPassword() != null && admin.getPassword().equals(password))
+        return adminRepository.findByMail(mail)
+                .map(admin -> password != null && password.equals(admin.getPassword()))
                 .orElse(false);
     }
 }

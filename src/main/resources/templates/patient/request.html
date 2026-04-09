@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Request</title>
+    <title>Patient Request</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
+<main class="page-wrap">
+    <section class="panel" style="max-width: 760px; margin: 0 auto;">
+        <h1 class="title-xl">Create Patient Request</h1>
+        <p class="subtitle">Submit blood or organ requirements for processing.</p>
 
-<h1>Request Blood / Organ 🏥</h1>
+        <div th:if="${error}" th:text="${error}" class="notice"></div>
 
-<form action="/patient/request" method="post">
+        <form action="/patient/request" method="post" class="form-grid">
+            <div>
+                <label for="requestType">Request Type</label>
+                <select id="requestType" name="requestType" required>
+                    <option value="BLOOD">Blood</option>
+                    <option value="ORGAN">Organ</option>
+                </select>
+            </div>
 
-    Name: <input type="text" name="name"><br><br>
+            <div>
+                <label for="detail">Detail (Blood Group or Organ Type)</label>
+                <input id="detail" type="text" name="detail" required>
+            </div>
 
-    Blood Type: <input type="text" name="requiredBloodType"><br><br>
+            <div>
+                <label for="quantity">Quantity</label>
+                <input id="quantity" type="number" name="quantity" min="1" required>
+            </div>
 
-    Organ: <input type="text" name="requiredOrgan"><br><br>
-
-    Urgency:
-    <select name="urgencyLevel">
-        <option>CRITICAL</option>
-        <option>HIGH</option>
-        <option>NORMAL</option>
-    </select><br><br>
-
-    <button type="submit">Submit</button>
-
-</form>
-
-<br>
-<a href="/patient/dashboard">Back</a>
-
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Submit Request</button>
+                <a href="/patient/dashboard" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+    </section>
+</main>
 </body>
 </html>

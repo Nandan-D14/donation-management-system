@@ -1,32 +1,79 @@
 package com.donation.system.service;
 
-import com.donation.system.model.entity.Patient;
 import com.donation.system.model.entity.Request;
 import com.donation.system.model.entity.User;
-import com.donation.system.repository.PatientRepository;
 import com.donation.system.repository.RequestRepository;
 import com.donation.system.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.EnumSet;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+/**
+ * Request creation and listing service.
+ *
+ * @author Team
+ */
 @Service
 public class RequestService {
 
+    private static final EnumSet<RequestStatus> TERMINAL_STATUSES = EnumSet.of(RequestStatus.APPROVED, RequestStatus.DENIED);
+
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
-    private final PatientRepository patientRepository;
 
-    public RequestService(RequestRepository requestRepository,
-                          UserRepository userRepository,
-                          PatientRepository patientRepository) {
+    public RequestService(RequestRepository requestRepository, UserRepository userRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
-        this.patientRepository = patientRepository;
     }
 
     public List<Request> getAllRequests() {
         return requestRepository.findAll();
+    }
+
+    public List<Request> getPendingRequests() {
+        return requestRepository.findByStatusIgnoreCaseOrderByCreatedAtAsc("PENDING");
+    }
+
+    public List<Request> getRequestsForUserMail(String userMail) {
+        String normalizedMail = normalizeRequired(userMail, "userMail").toLowerCase();
+        return requestRepository.findByCreatedBy_MailOrderByCreatedAtDesc(normalizedMail);
+    }
+
+    public Optional<Request> getRequestById(int id) {
+        return requestRepository.findById(id);
+    }
+
+    public List<String> getAllowedNextStatuses(String currentStatus) {
+        RequestStatus current = parseStatus(currentStatus);
+        return Arrays.stream(RequestStatus.values())
+                .filter(next -> next != RequestStatus.PENDING)
+                .filter(next -> isValidTransition(current, next))
+                .map(Enum::name)
+                .collect(Collectors.toList());
+    }
+
+    public boolean updateRequestStatus(int id, String status) {
+        Optional<Request> requestOptional = requestRepository.findById(id);
+        if (requestOptional.isEmpty()) {
+            return false;
+        }
+
+        RequestStatus nextStatus = parseStatus(status);
+        Request request = requestOptional.get();
+        RequestStatus currentStatus = parseStatus(request.getStatus());
+
+        if (!isValidTransition(currentStatus, nextStatus)) {
+            throw new IllegalArgumentException(
+                    "Invalid request status transition: " + currentStatus + " -> " + nextStatus);
+        }
+
+        request.setStatus(nextStatus.name());
+        requestRepository.save(request);
+        return true;
     }
 
     public Request createRequest(String creatorRole,
@@ -35,90 +82,70 @@ public class RequestService {
                                  String userMail,
                                  String detail,
                                  int quantity) {
-        String normalizedCreatorRole = normalizeRequired(creatorRole, "creatorRole").toUpperCase();
-        String normalizedRequestType = normalizeRequired(requestType, "requestType").toUpperCase();
-        String normalizedUserName = normalizeRequired(userName, "userName");
-        String normalizedUserMail = normalizeRequired(userMail, "userMail").toLowerCase();
+        String normalizedRole = normalizeRequired(creatorRole, "creatorRole").toUpperCase();
+        String normalizedType = normalizeRequired(requestType, "requestType").toUpperCase();
+        String normalizedName = normalizeRequired(userName, "userName");
+        String normalizedMail = normalizeRequired(userMail, "userMail").toLowerCase();
         String normalizedDetail = normalizeRequired(detail, "detail");
 
         if (quantity <= 0) {
-            throw new IllegalArgumentException("quantity must be greater than zero");
+            throw new IllegalArgumentException("Quantity must be greater than zero.");
         }
-        if (!"BLOOD".equals(normalizedRequestType) && !"ORGAN".equals(normalizedRequestType)) {
-            throw new IllegalArgumentException("requestType must be BLOOD or ORGAN");
+        if (!"BLOOD".equals(normalizedType) && !"ORGAN".equals(normalizedType)) {
+            throw new IllegalArgumentException("Request type must be BLOOD or ORGAN.");
         }
 
-        if ("PATIENT".equals(normalizedCreatorRole)) {
-            return createPatientRequest(normalizedRequestType, normalizedUserName, normalizedUserMail, normalizedDetail, quantity);
+        User creator = userRepository.findByMail(normalizedMail)
+                .orElseThrow(() -> new IllegalArgumentException("Logged in user not found."));
+
+        creator.setName(normalizedName);
+        if (creator.getRole() == null || creator.getRole().isBlank()) {
+            creator.setRole(normalizedRole);
         }
-        if (!"USER".equals(normalizedCreatorRole)) {
-            throw new IllegalArgumentException("creatorRole must be USER or PATIENT");
-        }
-        return createUserRequest(normalizedRequestType, normalizedUserName, normalizedUserMail, normalizedDetail, quantity);
-    }
-
-    public Request createRequest(String requestType, String userName, String userMail, String detail, int quantity) {
-        return createRequest("USER", requestType, userName, userMail, detail, quantity);
-    }
-
-    private Request createUserRequest(String requestType, String userName, String userMail, String detail, int quantity) {
-        User creator = userRepository.findByMail(userMail)
-                .map(existing -> {
-                    existing.setName(userName);
-                    return existing;
-                })
-                .orElseGet(() -> {
-                    User newUser = new User();
-                    newUser.setName(userName);
-                    newUser.setMail(userMail);
-                    newUser.setRole("REQUESTER");
-                    return newUser;
-                });
-
         User savedCreator = userRepository.save(creator);
 
-        Request request;
-        if ("ORGAN".equalsIgnoreCase(requestType)) {
-            request = savedCreator.createOrganRequest(detail, quantity);
-        } else {
-            request = savedCreator.createBloodRequest(detail, quantity);
-        }
-
-        return requestRepository.save(request);
-    }
-
-    private Request createPatientRequest(String requestType, String userName, String userMail, String detail, int quantity) {
-        Patient patient = patientRepository.findByMail(userMail).orElseGet(Patient::new);
-        patient.setName(userName);
-        patient.setMail(userMail);
-
-        User linkedUser = patient.getUserAccount();
-        if (linkedUser == null) {
-            linkedUser = userRepository.findByMail(userMail).orElseGet(User::new);
-        }
-
-        linkedUser.setName(userName);
-        linkedUser.setMail(userMail);
-        linkedUser.setRole("PATIENT");
-
-        User savedLinkedUser = userRepository.save(linkedUser);
-        patient.setUserAccount(savedLinkedUser);
-        Patient savedPatient = patientRepository.save(patient);
-
-        Request request;
-        if ("ORGAN".equalsIgnoreCase(requestType)) {
-            request = savedPatient.createOrganRequest(detail, quantity);
-        } else {
-            request = savedPatient.createBloodRequest(detail, quantity);
-        }
+        Request request = "ORGAN".equals(normalizedType)
+                ? savedCreator.createOrganRequest(normalizedDetail, quantity)
+                : savedCreator.createBloodRequest(normalizedDetail, quantity);
 
         return requestRepository.save(request);
     }
 
     private String normalizeRequired(String value, String fieldName) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException(fieldName + " is required");
+            throw new IllegalArgumentException(fieldName + " is required.");
         }
         return value.trim();
+    }
+
+    private RequestStatus parseStatus(String status) {
+        String normalized = normalizeRequired(status, "status").toUpperCase();
+        try {
+            return RequestStatus.valueOf(normalized);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(
+                    "Status must be one of: PENDING, APPROVED, DENIED.");
+        }
+    }
+
+    private boolean isValidTransition(RequestStatus current, RequestStatus next) {
+        if (current == next) {
+            return true;
+        }
+
+        if (TERMINAL_STATUSES.contains(current)) {
+            return false;
+        }
+
+        return switch (current) {
+            case PENDING -> next == RequestStatus.APPROVED || next == RequestStatus.DENIED;
+            case APPROVED, DENIED -> false;
+        };
+    }
+
+    private enum RequestStatus {
+        PENDING,
+        APPROVED,
+        DENIED
     }
 }

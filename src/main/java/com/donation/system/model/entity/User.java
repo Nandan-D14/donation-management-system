@@ -1,57 +1,74 @@
 package com.donation.system.model.entity;
 
-import com.donation.system.service.factory.RequestFactory;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
+/**
+ * Base user entity for authentication and role-based access.
+ *
+ * @author Team
+ */
 @Entity
-@Table(name = "request_users")
-@Data
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class User {
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
+    @Column(name = "id")
+    private Integer id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
     private String mail;
 
+    @Column(nullable = false)
     private String password;
 
-    private Integer phone;
+    @Column
+    private Long phone;
 
+    @Column(nullable = false)
     private String role;
 
     public boolean login(String inputMail, String inputPassword) {
         return Objects.equals(mail, inputMail) && Objects.equals(password, inputPassword);
     }
 
-    public void register() { }
+    public void register() {
+        if (role == null || role.isBlank()) {
+            role = "USER";
+        }
+    }
 
-    public void updateProfile(String updatedName, Integer updatedPhone) {
+    public void updateProfile(String updatedName, Long updatedPhone) {
         this.name = updatedName;
         this.phone = updatedPhone;
     }
 
-    /**
-     * GRASP Creator: User creates blood request objects via the factory.
-     */
     public Request createBloodRequest(String bloodGroup, int quantity) {
-        return RequestFactory.createBloodRequest(this, bloodGroup, quantity);
+        return new BloodRequest(this, quantity, bloodGroup);
     }
 
-    /**
-     * GRASP Creator: User creates organ request objects via the factory.
-     */
     public Request createOrganRequest(String organType, int quantity) {
-        return RequestFactory.createOrganRequest(this, organType, quantity);
+        return new OrganRequest(this, quantity, organType);
     }
 }

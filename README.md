@@ -1,6 +1,6 @@
 # Event-Driven Blood & Organ Donation Management System
 
-A Spring Boot MVC web application for managing blood and organ donations, built with Java 23, MySQL, and Thymeleaf.
+A Spring Boot MVC web application for managing blood and organ donations, built with Java 17+, MySQL, and Thymeleaf.
 
 ---
 
@@ -8,7 +8,7 @@ A Spring Boot MVC web application for managing blood and organ donations, built 
 
 | Layer | Technology |
 |-------|------------|
-| **Backend** | Spring Boot 4.0.5 · Java 23 |
+| **Backend** | Spring Boot 3.2.5 · Java 17+ |
 | **Database** | MySQL 8.0+ · Spring Data JPA · Hibernate |
 | **Frontend** | Thymeleaf · Bootstrap 5 |
 | **Build** | Maven (wrapper included) |
@@ -69,6 +69,30 @@ spring.datasource.password=YOUR_MYSQL_PASSWORD
 ### 5. Access
 Open `http://localhost:8080` in your browser.
 
+### 6. If You Migrated Old Tables
+If your MySQL schema had old columns (for example `userid` and `donationid`), run:
+
+`sql/mysql_schema_repair.sql`
+
+This script:
+- Renames old tables to `_legacy`
+- Creates clean tables matching current JPA entities
+- Migrates compatible rows
+
+After validating data, you can remove legacy tables by running:
+
+`sql/mysql_drop_legacy_tables.sql`
+
+To insert sample rows for quick UI checks, run:
+
+`sql/mysql_seed_dummy_data.sql`
+
+### 7. Important Runtime Note
+Do not run with the dev profile when testing MySQL persistence.
+
+- Use MySQL run: `./mvnw spring-boot:run`
+- Avoid H2 dev run for DB persistence checks: `SPRING_PROFILES_ACTIVE=dev`
+
 ---
 
 ## 📁 Project Structure
@@ -124,6 +148,34 @@ git push -u origin feature/<member-name>
 | Run | `./mvnw spring-boot:run` |
 | Test | `./mvnw test` |
 | Skip tests | `./mvnw spring-boot:run -DskipTests` |
+
+---
+
+## ✅ Login Testing (Role-Based)
+
+You can test login and dashboard routing with seeded accounts:
+
+1. Admin login
+    - Email: `admin.one@test.com`
+    - Password: `admin123`
+    - Expected: redirect to `/admin/dashboard`
+
+2. Donor login
+    - Email: `donor.blood@test.com`
+    - Password: `donor123`
+    - Expected: redirect to `/donor/dashboard`
+
+3. Patient login
+    - Email: `patient.one@test.com`
+    - Password: `patient123`
+    - Expected: redirect to `/patient/dashboard`
+
+Quick DB verification queries:
+
+- `SELECT COUNT(*) FROM users;`
+- `SELECT COUNT(*) FROM donations;`
+- `SELECT COUNT(*) FROM requests;`
+- `SELECT COUNT(*) FROM inventory;`
 
 ---
 This project is for academic purposes (OOAD Coursework).

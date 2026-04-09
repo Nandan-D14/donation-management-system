@@ -1,54 +1,27 @@
 package com.donation.system.model.entity;
 
-import com.donation.system.service.factory.RequestFactory;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Patient user subtype.
+ *
+ * @author Team
+ */
 @Entity
-@Table(name = "patients")
-@Data
+@DiscriminatorValue("PATIENT")
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class Patient {
+public class Patient extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int patientID;
-
-    private String name;
-
-    @Column(nullable = false, unique = true)
-    private String mail;
-
+    @Column
     private String conditionNote;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User userAccount;
-
-    private User ensureUserAccount() {
-        if (userAccount == null) {
-            userAccount = new User();
-        }
-        userAccount.setName(name);
-        userAccount.setMail(mail);
-        userAccount.setRole("PATIENT");
-        return userAccount;
-    }
-
-    /**
-     * GRASP Creator: Patient creates blood request objects via the factory.
-     */
-    public Request createBloodRequest(String bloodGroup, int quantity) {
-        return RequestFactory.createBloodRequest(ensureUserAccount(), bloodGroup, quantity);
-    }
-
-    /**
-     * GRASP Creator: Patient creates organ request objects via the factory.
-     */
-    public Request createOrganRequest(String organType, int quantity) {
-        return RequestFactory.createOrganRequest(ensureUserAccount(), organType, quantity);
-    }
+    @Column
+    private String status = "PENDING";
 }

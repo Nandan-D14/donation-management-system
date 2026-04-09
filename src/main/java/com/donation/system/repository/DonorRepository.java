@@ -1,7 +1,10 @@
 package com.donation.system.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.donation.system.model.entity.Donor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DonorRepository extends JpaRepository<Donor, Long> {
+import java.util.Optional;
+
+public interface DonorRepository extends JpaRepository<Donor, Integer> {
+    Optional<Donor> findByMail(String mail);
 }

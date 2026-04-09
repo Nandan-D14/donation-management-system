@@ -2,36 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Donor Dashboard</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            margin-top: 40px;
-        }
-        h1 {
-            color: darkred;
-        }
-        a {
-            display: block;
-            margin: 10px;
-            font-size: 18px;
-            text-decoration: none;
-            color: green;
-        }
-        a:hover {
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
+<main class="page-wrap">
+    <section class="panel" style="max-width: 860px; margin: 0 auto;">
+        <h1 class="title-xl">Donor Dashboard</h1>
+        <p class="subtitle">Signed in as <strong th:text="${userName}">Donor</strong></p>
 
-<h1>Donor Dashboard 🩸</h1>
-
-<h3>Welcome Donor!</h3>
-
-<a href="/donor/donate">➤ Donate Blood / Organ</a>
-<a href="/donor/status">➤ View Donation Status</a>
-<a href="/">🏠 Home</a>
-
+        <div class="row">
+            <a href="/donor/donate" class="btn btn-primary">Submit Donation</a>
+            <a href="/donor/status" class="btn btn-accent">View Donation Status</a>
+            <a href="/" class="btn btn-secondary">Home</a>
+        </div>
+    </section>
+</main>
 </body>
 </html>

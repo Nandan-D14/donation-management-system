@@ -3,11 +3,20 @@ package com.donation.system.model.entity;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Organ request subtype.
+ *
+ * @author Team
+ */
 @Entity
 @DiscriminatorValue("ORGAN")
 @NoArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 public class OrganRequest extends Request {
 
@@ -15,14 +24,6 @@ public class OrganRequest extends Request {
 
     public OrganRequest(User createdBy, int quantity, String organType) {
         super(createdBy, quantity, "ORGAN");
-        this.organType = organType;
-    }
-
-    public String getOrganType() {
-        return organType;
-    }
-
-    public void setOrganType(String organType) {
         this.organType = organType;
     }
 

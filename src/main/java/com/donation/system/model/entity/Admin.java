@@ -1,31 +1,22 @@
 package com.donation.system.model.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
+/**
+ * Admin user subtype.
+ *
+ * @author Team
+ */
 @Entity
-@Table(name = "admins")
-@Data
+@DiscriminatorValue("ADMIN")
 @NoArgsConstructor
-@AllArgsConstructor
-public class Admin {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int adminID;
-
-    private String name;
-    private String mail;
-    private String password;
-    private Long phone;
+public class Admin extends User {
 
     public void manageUsers() {
-        System.out.println("Admin managing users");
     }
 
     public void generateReports() {
-        System.out.println("Admin generating reports");
     }
 }

@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Track Request</title>
+    <title>Track Requests</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Request Tracking</h1>
+        <p class="subtitle">Current request list and admin decision status.</p>
 
-<h1>Track Request 📍</h1>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Detail</th>
+                    <th>Quantity</th>
+                    <th>Decision</th>
+                    <th>Created By</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="r : ${requests}">
+                    <td th:text="${r.requestType}">BLOOD</td>
+                    <td th:text="${r.requestDetail}">O+</td>
+                    <td th:text="${r.quantity}">1</td>
+                    <td th:text="${r.status}">PENDING</td>
+                    <td th:text="${r.createdBy != null ? r.createdBy.name : 'N/A'}">N/A</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(requests)}">
+                    <td colspan="5">No requests available.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Blood</th>
-        <th>Organ</th>
-        <th>Status</th>
-    </tr>
-
-    <tr th:each="p : ${requests}">
-        <td th:text="${p.name}"></td>
-        <td th:text="${p.requiredBloodType}"></td>
-        <td th:text="${p.requiredOrgan}"></td>
-        <td th:text="${p.status}"></td>
-    </tr>
-</table>
-
-<br>
-<a href="/patient/dashboard">Back</a>
-
+        <div class="row">
+            <a href="/patient/dashboard" class="btn btn-secondary">Back</a>
+        </div>
+    </section>
+</main>
 </body>
 </html>

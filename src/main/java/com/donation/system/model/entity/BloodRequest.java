@@ -3,11 +3,20 @@ package com.donation.system.model.entity;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Blood request subtype.
+ *
+ * @author Team
+ */
 @Entity
 @DiscriminatorValue("BLOOD")
 @NoArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 public class BloodRequest extends Request {
 
@@ -15,14 +24,6 @@ public class BloodRequest extends Request {
 
     public BloodRequest(User createdBy, int quantity, String bloodGroup) {
         super(createdBy, quantity, "BLOOD");
-        this.bloodGroup = bloodGroup;
-    }
-
-    public String getBloodGroup() {
-        return bloodGroup;
-    }
-
-    public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
     }
 

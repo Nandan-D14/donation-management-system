@@ -1,26 +1,34 @@
 package com.donation.system.service;
 
-import org.springframework.stereotype.Service;
-import java.util.List;
-
 import com.donation.system.model.entity.Patient;
 import com.donation.system.repository.PatientRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/**
+ * Patient workflow service.
+ *
+ * @author Team
+ */
 @Service
 public class PatientService {
 
-    private final PatientRepository repo;
+    private final PatientRepository patientRepository;
 
-    public PatientService(PatientRepository repo) {
-        this.repo = repo;
+    public PatientService(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
     }
 
-    public Patient registerPatient(Patient p) {
-        p.setStatus("PENDING");
-        return repo.save(p);
+    public Patient registerPatient(Patient patient) {
+        patient.setRole("PATIENT");
+        if (patient.getStatus() == null || patient.getStatus().isBlank()) {
+            patient.setStatus("PENDING");
+        }
+        return patientRepository.save(patient);
     }
 
-    public List<Patient> getAllRequests() {
-        return repo.findAll();
+    public List<Patient> getAllPatients() {
+        return patientRepository.findAll();
     }
 }

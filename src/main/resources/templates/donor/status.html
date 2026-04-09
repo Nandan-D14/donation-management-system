@@ -2,29 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Donation Status</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Your Donations</h1>
+        <p class="subtitle">Track status for all submitted donations.</p>
 
-<h1>Donation Status 📊</h1>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Specification</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="d : ${donations}">
+                    <td th:text="${d.donationType}">BLOOD</td>
+                    <td th:text="${d.bloodType != null ? d.bloodType : (d.organType != null ? d.organType : '-')}">O+</td>
+                    <td th:text="${d.quantity}">1</td>
+                    <td th:text="${d.status}">PENDING</td>
+                    <td th:text="${#temporals.format(d.date, 'yyyy-MM-dd HH:mm')}">2026-04-08 20:00</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(donations)}">
+                    <td colspan="5">No donations submitted yet.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Blood Type</th>
-        <th>Organ</th>
-        <th>Status</th>
-    </tr>
-
-    <tr th:each="d : ${donations}">
-        <td th:text="${d.name}"></td>
-        <td th:text="${d.bloodType}"></td>
-        <td th:text="${d.organType}"></td>
-        <td th:text="${d.status}"></td>
-    </tr>
-</table>
-
-<br>
-<a href="/donor/dashboard">Back</a>
-
+        <div class="row">
+            <a href="/donor/dashboard" class="btn btn-secondary">Back</a>
+        </div>
+    </section>
+</main>
 </body>
 </html>

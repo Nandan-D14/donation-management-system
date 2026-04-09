@@ -2,19 +2,23 @@ package com.donation.system.controller;
 
 import com.donation.system.model.entity.User;
 import com.donation.system.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import com.donation.system.service.RequestService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
 /**
- * GRASP Controller: RequestController accepts request module HTTP inputs
- * and delegates request creation/listing to RequestService.
+ * Request module controller.
  *
- * @author Sharath (SRN 823)
+ * @author Team
  */
 @Controller
 @RequestMapping("/requests")
@@ -34,24 +38,27 @@ public class RequestController {
     }
 
     @GetMapping("/list")
-    public String listRequests(Model model) {
+    public String listRequests(HttpSession session, Model model) {
+        if (session.getAttribute("userMail") == null) {
+            return "redirect:/login";
+        }
+        if (!"ADMIN".equalsIgnoreCase((String) session.getAttribute("role"))) {
+            return "redirect:/patient/track";
+        }
         model.addAttribute("requests", requestService.getAllRequests());
         return "requests/list";
     }
 
     @GetMapping({"/create", "/add"})
-    public String addRequestForm(@RequestParam(required = false) String success,
-                                 HttpSession session,
-                                 Model model) {
+    public String addRequestForm(HttpSession session, Model model) {
         Object userMail = session.getAttribute("userMail");
         if (userMail == null) {
             return "redirect:/login";
         }
-        if ("created".equals(success)) {
-            model.addAttribute("success", "Request created successfully.");
+        if (!"PATIENT".equalsIgnoreCase((String) session.getAttribute("role"))) {
+            return "redirect:/requests/list";
         }
-        model.addAttribute("currentUserMail", String.valueOf(userMail));
-        return "requests/add";
+        return "redirect:/patient/request";
     }
 
     @PostMapping({"/create", "/add"})
@@ -60,10 +67,12 @@ public class RequestController {
                                 @RequestParam String detail,
                                 @RequestParam int quantity,
                                 Model model) {
-
         Object userMailObj = session.getAttribute("userMail");
         if (userMailObj == null) {
             return "redirect:/login";
+        }
+        if (!"PATIENT".equalsIgnoreCase((String) session.getAttribute("role"))) {
+            return "redirect:/requests/list";
         }
 
         String userMail = String.valueOf(userMailObj).trim().toLowerCase();
@@ -74,20 +83,53 @@ public class RequestController {
         }
 
         User currentUser = currentUserOptional.get();
-        String creatorRole = (currentUser.getRole() == null || currentUser.getRole().isBlank())
-                ? "USER"
-                : currentUser.getRole();
-        String userName = (currentUser.getName() == null || currentUser.getName().isBlank())
-                ? "User"
-                : currentUser.getName();
+        String creatorRole = currentUser.getRole() == null ? "USER" : currentUser.getRole();
+        String userName = currentUser.getName() == null ? "User" : currentUser.getName();
 
         try {
             requestService.createRequest(creatorRole, requestType, userName, userMail, detail, quantity);
-            return "redirect:/requests/create?success=created";
+            return "redirect:/patient/track";
         } catch (IllegalArgumentException ex) {
             model.addAttribute("error", ex.getMessage());
             model.addAttribute("currentUserMail", userMail);
-            return "requests/add";
+            return "patient/request";
         }
+    }
+
+    @GetMapping("/{id}")
+    public String viewRequestById(HttpSession session, @PathVariable int id, Model model) {
+        if (session.getAttribute("userMail") == null) {
+            return "redirect:/login";
+        }
+        if (!"ADMIN".equalsIgnoreCase((String) session.getAttribute("role"))) {
+            return "redirect:/requests/list";
+        }
+        return requestService.getRequestById(id)
+                .map(req -> {
+                    model.addAttribute("request", req);
+                    model.addAttribute("allowedStatuses", requestService.getAllowedNextStatuses(req.getStatus()));
+                    return "requests/status";
+                })
+                .orElse("redirect:/requests/list");
+    }
+
+    @PostMapping("/{id}/status")
+    public String updateRequestStatus(HttpSession session,
+                                      @PathVariable int id,
+                                      @RequestParam String status,
+                                      RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("userMail") == null) {
+            return "redirect:/login";
+        }
+        if (!"ADMIN".equalsIgnoreCase((String) session.getAttribute("role"))) {
+            return "redirect:/requests/list";
+        }
+        try {
+            requestService.updateRequestStatus(id, status);
+            redirectAttributes.addFlashAttribute("message", "Request status updated successfully.");
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/requests/" + id;
     }
 }

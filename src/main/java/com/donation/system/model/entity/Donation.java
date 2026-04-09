@@ -1,27 +1,61 @@
 package com.donation.system.model.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+/**
+ * Donation record created by a donor.
+ *
+ * @author Team
+ */
 @Entity
 @Table(name = "donations")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Donation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int donationID;
+    @Column(name = "id")
+    private Integer id;
 
+    @Column(nullable = false)
     private String donationType;
-    private Date date;
-    private int quantity;
-    private String status;
+
+    @Column(name = "blood_type")
+    private String bloodType;
+
+    @Column(name = "organ_type")
+    private String organType;
+
+    @Column(nullable = false)
+    private LocalDateTime date = LocalDateTime.now();
+
+    @Column(nullable = false)
+    private Integer quantity;
+
+    @Column(nullable = false)
+    private String status = "PENDING";
+
+    @Column(nullable = true)
+    private String allocatedStatus = "NOT_ALLOCATED";
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "donor_id")
+    private Donor donor;
 
     public void updateStatus(String newStatus) {
         this.status = newStatus;

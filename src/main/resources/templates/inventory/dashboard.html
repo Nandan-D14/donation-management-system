@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inventory Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel">
+        <h1 class="title-xl">Inventory Management</h1>
+        <p class="subtitle">View blood and organ stock automatically synced from donor submissions.</p>
+
+        <div class="row" style="margin-bottom: 24px;">
+            <a href="/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+
+        <h2 style="margin-top: 24px;">Current Available Inventory</h2>
+        <p style="color: #6b7280; font-size: 14px; margin-bottom: 12px;">Inventory is automatically updated when donors submit donations.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Specification</th>
+                    <th>Available Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${inventoryItems}">
+                    <td th:text="${item.bloodType != null ? 'Blood' : 'Organ'}">Blood</td>
+                    <td th:text="${item.bloodType != null ? item.bloodType : item.organType}">O+</td>
+                    <td th:text="${item.quantity}">0</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(inventoryItems)}">
+                    <td colspan="3" style="text-align: center; color: #9ca3af;">No inventory available yet. Donors need to submit donations first.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="notice" style="margin-top: 24px;">
+            <strong>ℹ Note:</strong> Inventory is managed automatically. When donors submit donations, they are added to the inventory. When admins allocate donations to fulfill requests, the inventory is reduced.
+        </div>
+    </section>
+</main>
+</body>
+</html>

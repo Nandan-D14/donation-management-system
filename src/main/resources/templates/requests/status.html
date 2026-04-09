@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Request Status</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page-wrap">
+    <section class="panel" th:if="${request != null}">
+        <h1 class="title-xl">Request Details</h1>
+        <p class="subtitle">View and update request status.</p>
+
+        <div class="alert alert-success" th:if="${message}" th:text="${message}">Updated</div>
+        <div class="alert alert-danger" th:if="${error}" th:text="${error}">Error</div>
+
+        <div class="table-wrap">
+            <table>
+                <tbody>
+                <tr><th>ID</th><td th:text="${request.id}">1</td></tr>
+                <tr><th>Type</th><td th:text="${request.requestType}">BLOOD</td></tr>
+                <tr><th>Detail</th><td th:text="${request.requestDetail}">O+</td></tr>
+                <tr><th>Quantity</th><td th:text="${request.quantity}">1</td></tr>
+                <tr><th>Status</th><td th:text="${request.status}">PENDING</td></tr>
+                <tr><th>Created By</th><td th:text="${request.createdBy != null ? request.createdBy.name : '-'}">User</td></tr>
+                <tr><th>Created At</th><td th:text="${#temporals.format(request.createdAt, 'yyyy-MM-dd HH:mm')}">2026-04-09 12:00</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <form th:action="@{'/requests/' + ${request.id} + '/status'}" method="post" class="form-grid" style="margin-top:16px; max-width:340px;">
+            <div>
+                <label for="status">Update Status</label>
+                <select id="status" name="status" required th:disabled="${#lists.isEmpty(allowedStatuses)}">
+                    <option th:each="s : ${allowedStatuses}" th:value="${s}" th:text="${s}" th:selected="${s == request.status}">PENDING</option>
+                </select>
+                <p class="subtitle" th:if="${#lists.isEmpty(allowedStatuses)}">No further transitions allowed from current status.</p>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-primary" th:disabled="${#lists.isEmpty(allowedStatuses)}">Update</button>
+                <a href="/requests/list" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

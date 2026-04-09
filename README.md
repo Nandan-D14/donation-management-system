@@ -1,3 +1,12 @@
+## please refer sub branches for indivdual CODES.
+`379/Inventory(Neha)`
+`823/Creator + requests(Shrath)`
+`Sharath/823`
+`Feature/Controller`
+`nandini-donor-patient`
+
+---
+
 # Event-Driven Blood & Organ Donation Management System
 
 A Spring Boot MVC web application for managing blood and organ donations, built with Java 23, MySQL, and Thymeleaf.

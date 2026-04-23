@@ -10,25 +10,22 @@ import java.util.stream.Collectors;
 
 /**
  * Strategy Pattern — Concrete Strategy: Normal (FIFO) Matching.
+ * Matches donation bloodType against requestDetails, sorted by createdAt (oldest first).
+ * GRASP: Low Coupling — no dependency on Donor, Patient, or Admin.
+ *
  * @author Neha (SRN 379)
  */
 @Component("normalMatchingStrategy")
 public class NormalMatchingStrategy implements MatchingStrategy {
 
     @Override
-    public List<Request> match(Donation donation, List<Request> pendingRequests) {
-        int limit = donation.getQuantity() > 0 ? donation.getQuantity() : 0;
-
-        return pendingRequests.stream()
-                .filter(req -> matchesType(donation, req))
-                .sorted(Comparator.comparing(Request::getCreatedAt,
-                        Comparator.nullsLast(Comparator.naturalOrder())))
-                .limit(limit)
+    public List<Request> match(Donation donation, List<Request> requests) {
+        return requests.stream()
+                .filter(req -> donation.getBloodType() != null
+                        && req.getRequestDetails() != null
+                        && donation.getBloodType().equalsIgnoreCase(req.getRequestDetails()))
+                .sorted(Comparator.comparing(Request::getCreatedAt))
+                .limit(donation.getQuantity())
                 .collect(Collectors.toList());
-    }
-
-    private boolean matchesType(Donation donation, Request request) {
-        return donation.getDonationType() != null
-                && donation.getDonationType().equalsIgnoreCase(request.getRequestType());
     }
 }

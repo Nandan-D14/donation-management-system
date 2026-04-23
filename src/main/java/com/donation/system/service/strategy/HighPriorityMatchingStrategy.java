@@ -10,24 +10,22 @@ import java.util.stream.Collectors;
 
 /**
  * Strategy Pattern — Concrete Strategy: High Priority Matching.
+ * Matches donation bloodType against requestDetails, sorted by ID (highest priority first).
+ * GRASP: Low Coupling — no dependency on Donor, Patient, or Admin.
+ *
  * @author Neha (SRN 379)
  */
 @Component("highPriorityMatchingStrategy")
 public class HighPriorityMatchingStrategy implements MatchingStrategy {
 
     @Override
-    public List<Request> match(Donation donation, List<Request> pendingRequests) {
-        int limit = donation.getQuantity() > 0 ? donation.getQuantity() : 0;
-
-        return pendingRequests.stream()
-                .filter(req -> matchesType(donation, req))
+    public List<Request> match(Donation donation, List<Request> requests) {
+        return requests.stream()
+                .filter(req -> donation.getBloodType() != null
+                        && req.getRequestDetails() != null
+                        && donation.getBloodType().equalsIgnoreCase(req.getRequestDetails()))
                 .sorted(Comparator.comparing(Request::getId))
-                .limit(limit)
+                .limit(donation.getQuantity())
                 .collect(Collectors.toList());
-    }
-
-    private boolean matchesType(Donation donation, Request request) {
-        return donation.getDonationType() != null
-                && donation.getDonationType().equalsIgnoreCase(request.getRequestType());
     }
 }

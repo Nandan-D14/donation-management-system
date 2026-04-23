@@ -21,9 +21,9 @@ public class HighPriorityMatchingStrategy implements MatchingStrategy {
     @Override
     public List<Request> match(Donation donation, List<Request> requests) {
         return requests.stream()
-                .filter(req -> donation.getBloodType() != null
+                .filter(req -> donation.getDonationType() != null
                         && req.getRequestDetails() != null
-                        && donation.getBloodType().equalsIgnoreCase(req.getRequestDetails()))
+                        && donation.getDonationType().equalsIgnoreCase(req.getRequestDetails()))
                 .sorted(Comparator.comparing(Request::getId))
                 .limit(donation.getQuantity())
                 .collect(Collectors.toList());

@@ -1,36 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Inventory Dashboard</title></head>
+<html>
+<head>
+    <title>Inventory Dashboard</title>
+</head>
 <body>
-
-<h1>Inventory Dashboard</h1>
-<a href="/inventory/stock">Manage Stock</a> | <a href="/inventory/matching">Matching</a>
-
-<h2>All Stock</h2>
-<table border="1">
-    <tr>
-        <th>ID</th><th>Blood Type</th><th>Organ Type</th><th>Quantity</th>
-    </tr>
-    <tr th:each="item : ${allStock}">
-        <td th:text="${item.id}"></td>
-        <td th:text="${item.bloodType}"></td>
-        <td th:text="${item.organType}"></td>
-        <td th:text="${item.quantity}"></td>
-    </tr>
-</table>
-
-<h2>Low Stock (below 5)</h2>
-<table border="1">
-    <tr>
-        <th>ID</th><th>Blood Type</th><th>Organ Type</th><th>Quantity</th>
-    </tr>
-    <tr th:each="item : ${lowStock}">
-        <td th:text="${item.id}"></td>
-        <td th:text="${item.bloodType}"></td>
-        <td th:text="${item.organType}"></td>
-        <td th:text="${item.quantity}"></td>
-    </tr>
-</table>
-
+    <h2>Inventory Dashboard</h2>
+    <p>All stock and low stock will be displayed here.</p>
 </body>
 </html>

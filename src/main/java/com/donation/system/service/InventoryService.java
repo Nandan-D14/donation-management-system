@@ -3,6 +3,7 @@ package com.donation.system.service;
 import com.donation.system.model.entity.Donation;
 import com.donation.system.model.entity.Inventory;
 import com.donation.system.model.entity.Request;
+import com.donation.system.model.enums.RequestStatus;
 import com.donation.system.repository.InventoryRepository;
 import com.donation.system.repository.RequestRepository;
 import com.donation.system.service.strategy.MatchingStrategy;
@@ -67,7 +68,7 @@ public class InventoryService {
             throw new IllegalStateException("Matching strategy not set");
         }
 
-        List<Request> pending = requestRepository.findAll();
+        List<Request> pending = requestRepository.findByStatus(RequestStatus.PENDING);
         // Strategy Pattern: delegates to current strategy implementation
         return matchingStrategy.match(donation, pending);
     }
